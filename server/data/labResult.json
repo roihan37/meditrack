@@ -1,0 +1,51 @@
+[
+    {
+      "userId": "USER-ID",
+      "date": "2024-01-15",
+      "results": {
+        "glucose": 95,
+        "cholesterol": {
+          "total": 160,
+          "ldl": 100,
+          "hdl": 60
+        },
+        "bloodPressure": {
+          "systolic": 120,
+          "diastolic": 80
+        }
+      }
+    },
+    {
+      "userId": "USER-ID",
+      "date": "2024-03-22",
+      "results": {
+        "glucose": 105,
+        "cholesterol": {
+          "total": 170,
+          "ldl": 110,
+          "hdl": 55
+        },
+        "bloodPressure": {
+          "systolic": 125,
+          "diastolic": 82
+        }
+      }
+    },
+    {
+      "userId": "USER-ID",
+      "date": "2024-06-01",
+      "results": {
+        "glucose": 90,
+        "cholesterol": {
+          "total": 150,
+          "ldl": 95,
+          "hdl": 65
+        },
+        "bloodPressure": {
+          "systolic": 118,
+          "diastolic": 78
+        }
+      }
+    }
+  ]
+  
