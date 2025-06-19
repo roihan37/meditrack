@@ -10,48 +10,57 @@ import {
 import data from "@/app/dashboard/data.json"
 import { CholesterolCard } from "./components/card-colesterol"
 import { TableDashboard } from "./components/table-dashboard"
+import { GalleryVerticalEnd } from "lucide-react"
+import { LoginForm } from "./components/login-form"
 
 function App() {
   return (
-    <SidebarProvider
-      style={
-        {
-          "--sidebar-width": "calc(var(--spacing) * 72)",
-          "--header-height": "calc(var(--spacing) * 12)",
-        } as React.CSSProperties
-      }
-    >
-      <AppSidebar variant="inset" />
-      <SidebarInset>
-        <SiteHeader />
+    <div>
+      <SidebarProvider
+        style={
+          {
+            "--sidebar-width": "calc(var(--spacing) * 72)",
+            "--header-height": "calc(var(--spacing) * 12)",
+          } as React.CSSProperties
+        }
+      >
+        <AppSidebar variant="inset" />
+        <SidebarInset>
+          <SiteHeader />
 
-        <div className="py-4 gap-4 flex xl:flex-row flex-col">
-          <div className=" flex flex-col gap-4">
-            <SectionCards />
-            <ChartAreaInteractive />
+          <div className="py-4 gap-4 flex xl:flex-row flex-col">
+            <div className=" flex flex-col gap-4">
+              <SectionCards />
+              <ChartAreaInteractive />
+            </div>
+            <CholesterolCard />
           </div>
-            <CholesterolCard/>
-        </div>
 
-        <div className=" flex xl:flex-row gap-4 flex-col-reverse">
-        
-    {/* <DataTable data={data} /> */}
-    <TableDashboard/>
-  
+          <div className=" flex xl:flex-row gap-4 flex-col-reverse">
 
-            <CholesterolCard/>
-        </div>
+            <TableDashboard />
 
-      </SidebarInset>
-    </SidebarProvider>
-        // <div className="">
-        //   <div className="@container/main flex flex-row ">
-        //     <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-        //       <div className="px-4 lg:px-6">
-        //       </div>
-        //     </div>
-        //   </div>
-        // </div>
+
+            <CholesterolCard />
+          </div>
+            {/* <DataTable data={data} /> */}
+
+        </SidebarInset>
+      </SidebarProvider>
+
+      <div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+      <div className="flex w-full max-w-sm flex-col gap-6">
+        <a href="#" className="flex items-center gap-2 self-center font-medium">
+          <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
+            <GalleryVerticalEnd className="size-4" />
+          </div>
+          Acme Inc.
+        </a>
+        <LoginForm />
+      </div>
+    </div>
+    </div>
+    
   )
 }
 
