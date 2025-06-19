@@ -1,13 +1,7 @@
-import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react"
 
-import { Badge } from "@/components/ui/badge"
 import {
     Card,
-    CardAction,
     CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
 } from "@/components/ui/card"
 import { ChartBarCholesterol } from "./chart-bar-cholesterol"
 
@@ -26,21 +20,21 @@ export function CholesterolCard() {
                 </div>
                 <div className="flex flex-row gap-2">
                     <Card className="px-2 gap-3 w-full">
-                        <CardDescription className="text-xs sm:text-sm">Low-Density Lipoprotein</CardDescription>
+                        <CardDescription className="text-xs ">Low-Density Lipoprotein</CardDescription>
                         <div className="flex flex-row items-end gap-2">
                             <h1 className="text-2xl">100</h1>
                             <CardDescription className="text-sm">mg/dL</CardDescription>
                         </div>
                     </Card>
                     <Card className="px-2 gap-3 w-full">
-                        <CardDescription className="text-xs sm:text-sm">High-Density Lipoprotein</CardDescription>
+                        <CardDescription className="text-xs ">High-Density Lipoprotein</CardDescription>
                         <div className="flex flex-row items-end gap-2">
                             <h1 className="text-2xl">60</h1>
                             <CardDescription className="text-sm">mg/dL</CardDescription>
                         </div>
                     </Card>
                     <Card className="px-2 gap-3 w-full">
-                        <CardDescription className="text-xs sm:text-sm" >Total Cholesterol</CardDescription>
+                        <CardDescription className="text-xs " >Total Cholesterol</CardDescription>
                         <div className="flex flex-row items-end gap-2">
                             <h1 className="text-2xl">200</h1>
                             <CardDescription className="text-sm">mg/dL</CardDescription>
