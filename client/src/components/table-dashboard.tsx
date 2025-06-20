@@ -8,13 +8,16 @@ import {
 
 } from "@/components/ui/table"
 import { Card } from "./ui/card"
+import { IconHistory } from "@tabler/icons-react"
 
 
 export function TableDashboard() {
     return (
         <Card className=" p-6 gap-4 overflow-auto">
-
-            <h1 className="text-2xl ml-2">History Checkup</h1>
+            <div className="text-2xl ml-2 flex flex-row items-center gap-2">
+                <IconHistory />
+                <h1 >Checkup History</h1>
+            </div>
 
             <Table className="  overflow-auto ">
                 <TableHeader>

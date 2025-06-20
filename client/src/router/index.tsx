@@ -1,21 +1,39 @@
 import { createBrowserRouter } from "react-router-dom";
-import  {DashboardPage}  from "@/pages/DashboardPage"
+import { DashboardPage } from "@/pages/DashboardPage"
 import { LoginPage } from "@/pages/LoginPage";
-import { RegisterPage } from "@/pages/RegisterPage";
+import { SignupPage } from "@/pages/SignupPage";
+import { HistoriesPage } from "@/pages/HistoriesPage";
+import { AddResultPage } from "@/pages/AddResultPage";
+import { BaseLayout } from "@/components/BaseLayout";
 const router = createBrowserRouter([
-            {
-                path: "/",
-                element: <DashboardPage/>
-            },
-            {
-                path: "/login",
-                element: <LoginPage/>
-            },
-            {
-                path: "/register",
-                element: <RegisterPage/>
-            },
-            
+    {
+        element: <BaseLayout />,
+        children:
+            [
+                {
+                    path: "/",
+                    element: <DashboardPage />
+                },
+                {
+                    path: "/histories",
+                    element: <HistoriesPage />
+                },
+                {
+                    path: "/add-result",
+                    element: <AddResultPage />
+                }
+            ],
+        
+    },
+    {
+        path: "/login",
+        element: <LoginPage />
+    },
+    {
+        path: "/signup",
+        element: <SignupPage />
+    },
+
 
 ]);
 

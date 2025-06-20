@@ -10,20 +10,15 @@ import {
 import data from "@/app/dashboard/data.json"
 import { CholesterolCard } from "@/components/card-colesterol"
 import { TableDashboard } from "@/components/table-dashboard"
+import { ChartHistories } from "@/components/chart-histories"
+import { DatePickerForm } from "@/components/data-picker-form"
+import { Label } from "recharts"
+import { Input } from "@/components/ui/input"
 
-export function DashboardPage(){
-    return(
-        <SidebarProvider
-        style={
-          {
-            "--sidebar-width": "calc(var(--spacing) * 72)",
-            "--header-height": "calc(var(--spacing) * 12)",
-          } as React.CSSProperties
-        }
-      >
-        <AppSidebar variant="inset" />
-        <SidebarInset>
-          <SiteHeader />
+export function DashboardPage() {
+  return (
+    <>
+     
 
           <div className="py-4 gap-4 flex xl:flex-row flex-col">
             <div className=" flex flex-col gap-4">
@@ -35,12 +30,12 @@ export function DashboardPage(){
 
           {/* <div className=" flex xl:flex-row gap-4 flex-col-reverse">
 
-<CholesterolCard />
-</div> */}
-<TableDashboard />
+            <CholesterolCard />
+          </div> */}
+          <TableDashboard />
           {/* <DataTable data={data} /> */}
-
-        </SidebarInset>
-      </SidebarProvider>
-    )
+          
+       
+    </>
+  )
 }
