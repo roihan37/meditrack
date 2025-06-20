@@ -12,33 +12,34 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import type { Cholesterol } from "@/types/lab"
 
 export const description = "A mixed bar chart"
 
-const chartData = [
-  { browser: "chrome", label: "LDL", visitors: 275, fill: "var(--chart-1)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-]
-
-const chartConfig = {
+export function ChartBarCholesterol({ cholesterol }: { cholesterol: Cholesterol }) {
+  // console.log(cholesterol, '<< Colesterorl');
+  const chartData = [
+    { data: "LDL",  value: cholesterol.ldl, fill: "var(--chart-1)" },
+    { data: "HDL", value: cholesterol.hdl, fill: "var(--chart-2)" },
+    { data: "TOTAL", value: cholesterol.total, fill: "var(--chart-3)" },
+  ]
   
-  chrome: {
-    label: "LDL",
-    color: "var(--chart-1)",
-  },
-  safari: {
-    label: "HDL",
-    color: "var(--chart-2)",
-  },
-  firefox: {
-    label: "TOTAL",
-    color: "var(--chart-3)",
-  },
-  
-} satisfies ChartConfig
-
-export function ChartBarCholesterol() {
+  const chartConfig = {
+    
+    LDL: {
+      label: "LDL",
+      color: "var(--chart-1)",
+    },
+    HDL: {
+      label: "HDL",
+      color: "var(--chart-2)",
+    },
+    TOTAL: {
+      label: "TOTAL",
+      color: "var(--chart-3)",
+    },
+    
+  } satisfies ChartConfig
   return (
     <Card>
       
@@ -53,7 +54,7 @@ export function ChartBarCholesterol() {
             }}
           >
             <YAxis
-              dataKey="browser"
+              dataKey="data"
               type="category"
               tickLine={false}
               tickMargin={10}
@@ -62,15 +63,15 @@ export function ChartBarCholesterol() {
                 chartConfig[value as keyof typeof chartConfig]?.label
               }
             />
-            <XAxis dataKey="visitors" type="number" hide />
+            <XAxis dataKey="value" type="number" hide />
             <ChartTooltip
             
               cursor={false}
               content={<ChartTooltipContent 
-              labelKey="browser"
-              nameKey="browser" hideLabel />}
+              labelKey="data"
+              nameKey="data" hideLabel />}
             />
-            <Bar dataKey="visitors" layout="vertical" radius={5} barSize={24}/>
+            <Bar dataKey="value" layout="vertical" radius={5} barSize={24}/>
           </BarChart>
         </ChartContainer>
       </CardContent>

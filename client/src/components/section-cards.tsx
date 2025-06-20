@@ -7,11 +7,18 @@ import {
   CardDescription,
   CardTitle,
 } from "@/components/ui/card"
+import type {  ResultLab } from "@/types/lab"
+import { useAuthContext } from "@/context/AuthContext"
 
-export function SectionCards() {
+
+
+
+export function SectionCards( ) {
+  const { results }  = useAuthContext()
+  const result : ResultLab  = results?.[0] 
+
   return (
     <div className="grid grid-cols-1 gap-4  md:grid-cols-2 lg:grid-cols-3 *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card  *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs ">
-
       <Card className="p-6 justify-between gap-3" >
         <div className="flex justify-between items-center gap-2">
           <CardDescription className="font-normal text-sm text-zinc-900" >Glucose</CardDescription>
@@ -23,7 +30,7 @@ export function SectionCards() {
           </CardAction>
         </div>
         <CardTitle className=" font-normal text-3xl">
-          95
+          {result?.results.glucose}
           <span className="font-normal text-xl ml-2">mg/dL</span>
         </CardTitle>
 
@@ -45,7 +52,7 @@ export function SectionCards() {
           </CardAction>
         </div>
         <CardTitle className=" font-normal text-3xl">
-          160
+          {result?.results.cholesterol.total}
           <span className="font-normal text-xl ml-2">mg/dL</span>
         </CardTitle>
 
@@ -69,7 +76,7 @@ export function SectionCards() {
           </CardAction>
         </div>
         <CardTitle className=" font-normal text-3xl">
-          120/<span className="text-2xl">80</span>
+          {`${result?.results.bloodPressure.systolic}/`}<span className="text-2xl">{result?.results.bloodPressure.diastolic}</span>
           <span className="font-normal text-xl ml-2">mg/dL</span>
         </CardTitle>
 

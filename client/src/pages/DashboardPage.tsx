@@ -14,18 +14,21 @@ import { ChartHistories } from "@/components/chart-histories"
 import { DatePickerForm } from "@/components/data-picker-form"
 import { Label } from "recharts"
 import { Input } from "@/components/ui/input"
+import { useEffect } from "react"
+import { getAllResults } from "@/context/action"
 
-export function DashboardPage() {
+export default function DashboardPage() {
+  
   return (
     <>
      
 
           <div className="py-4 gap-4 flex xl:flex-row flex-col">
             <div className=" flex flex-col gap-4">
-              <SectionCards />
+              <SectionCards  />
               <ChartAreaInteractive />
             </div>
-            <CholesterolCard />
+            <CholesterolCard  />
           </div>
 
           {/* <div className=" flex xl:flex-row gap-4 flex-col-reverse">
@@ -33,7 +36,7 @@ export function DashboardPage() {
             <CholesterolCard />
           </div> */}
           <TableDashboard />
-          {/* <DataTable data={data} /> */}
+          <DataTable data={data} />
           
        
     </>
