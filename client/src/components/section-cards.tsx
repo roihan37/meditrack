@@ -76,7 +76,7 @@ export function SectionCards( ) {
           </CardAction>
         </div>
         <CardTitle className=" font-normal text-3xl">
-          {`${result?.results.bloodPressure.systolic}/`}<span className="text-2xl">{result?.results.bloodPressure.diastolic}</span>
+          {`${result?.results.bloodPressure.systolic}/`}<span className="text-3xl">{result?.results.bloodPressure.diastolic}</span>
           <span className="font-normal text-xl ml-2">mg/dL</span>
         </CardTitle>
 

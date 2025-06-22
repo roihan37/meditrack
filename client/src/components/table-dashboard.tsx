@@ -12,88 +12,73 @@ import { IconCircleCheckFilled, IconHistory } from "@tabler/icons-react"
 import { Badge } from "@/components/ui/badge"
 import { useAuthContext } from "@/context/AuthContext"
 
-type StatusResult = {
-    glucose: number,
-    cholesterol: {
-        total: number,
-        ldl: number,
-        hdl: number,
-    },
-    bloodPressure: {
-        systolic: number,
-        diastolic: number,
-    }
-}
+
 
 export function TableDashboard() {
     const { results } = useAuthContext()
-    const generateStatus = () => {
-        const status = results.map((el) => {
 
-            let glucoseStatus = "";
-            if (el.results.glucose < 70) {
-                glucoseStatus = "❗ Low";
-            } else if (el.results.glucose <= 99) {
-                glucoseStatus = "good";
-            }
-            else if (el.results.glucose <= 125) {
-                glucoseStatus = "⚠️ Pre-diabetes";
-            }
-            else {
-                "❗ Diabetes";
-            }
+    // const generateStatus = () => {
+    //     results.map((el) => {
 
-            let cholesterolTotalStatus = "";
-            if (el.results.cholesterol.total < 200) cholesterolTotalStatus = "good";
-            else if (el.results.cholesterol.total <= 239) cholesterolTotalStatus = "⚠️ Borderline High";
-            else cholesterolTotalStatus = "❗ High";
+    //         let glucoseStatus = "";
+    //         if (el.results.glucose < 70) {
+    //             glucoseStatus = "❗ Low";
+    //         } else if (el.results.glucose <= 99) {
+    //             glucoseStatus = "good";
+    //         }
+    //         else if (el.results.glucose <= 125) {
+    //             glucoseStatus = "⚠️ Pre-diabetes";
+    //         }
+    //         else {
+    //             "❗ Diabetes";
+    //         }
 
-            let ldlStatus = "";
-            if (el.results.cholesterol.ldl < 100) ldlStatus = "good";
-            else if (el.results.cholesterol.ldl <= 129) ldlStatus = "⚠️ Near Optimal";
-            else if (el.results.cholesterol.ldl <= 159) ldlStatus = "❗ Borderline High";
-            else ldlStatus = "❗ High";
+    //         let cholesterolTotalStatus = "";
+    //         if (el.results.cholesterol.total < 200) cholesterolTotalStatus = "good";
+    //         else if (el.results.cholesterol.total <= 239) cholesterolTotalStatus = "warning:⚠️ Borderline High";
+    //         else cholesterolTotalStatus = "bad:❗ High";
 
-            let hdlStatus = "";
-            if (el.results.cholesterol.hdl < 40) hdlStatus = "❗ Low (Bad)";
-            else if (el.results.cholesterol.hdl >= 60) hdlStatus = "good";
-            else hdlStatus = "⚠️ Acceptable";
+    //         let ldlStatus = "";
+    //         if (el.results.cholesterol.ldl < 100) ldlStatus = "good";
+    //         else if (el.results.cholesterol.ldl <= 129) ldlStatus = "warning:⚠️ Near Optimal";
+    //         else if (el.results.cholesterol.ldl <= 159) ldlStatus = "bad:❗ Borderline High";
+    //         else ldlStatus = "bad:❗ High";
 
-            let systolicStatus = "";
-            let diastolicStatus = "";
+    //         let hdlStatus = "";
+    //         if (el.results.cholesterol.hdl < 40) hdlStatus = "bad:❗ Low";
+    //         else if (el.results.cholesterol.hdl >= 60) hdlStatus = "good";
+    //         else hdlStatus = "warning:⚠️ Acceptable";
 
-            if (el.results.bloodPressure.systolic < 90) systolicStatus = "❗ Low";
-            else if (el.results.bloodPressure.systolic <= 120) systolicStatus = "good";
-            else if (el.results.bloodPressure.systolic <= 139) systolicStatus = "⚠️ Pre-hypertension";
-            else systolicStatus = "❗ Hypertension";
+    //         let systolicStatus = "";
+    //         let diastolicStatus = "";
 
-            if (el.results.bloodPressure.diastolic < 60) diastolicStatus = "❗ Low";
-            else if (el.results.bloodPressure.diastolic <= 80) diastolicStatus = "good";
-            else if (el.results.bloodPressure.diastolic <= 89) diastolicStatus = "⚠️ Pre-hypertension";
-            else diastolicStatus = "❗ Hypertension";
+    //         if (el.results.bloodPressure.systolic < 90) systolicStatus = "bad:❗ Low";
+    //         else if (el.results.bloodPressure.systolic <= 120) systolicStatus = "good";
+    //         else if (el.results.bloodPressure.systolic <= 139) systolicStatus = "warning:⚠️ Pre-hypertension";
+    //         else systolicStatus = "❗ Hypertension";
+
+    //         if (el.results.bloodPressure.diastolic < 60) diastolicStatus = "bad:❗ Low";
+    //         else if (el.results.bloodPressure.diastolic <= 80) diastolicStatus = "good";
+    //         else if (el.results.bloodPressure.diastolic <= 89) diastolicStatus = "warning:⚠️ Pre-hypertension";
+    //         else diastolicStatus = "bad:❗ Hypertension";
 
 
-            el.results.status = {
-                glucose: glucoseStatus,
-                cholesterol: {
-                    total: cholesterolTotalStatus,
-                    ldl: ldlStatus,
-                    hdl: hdlStatus,
-                },
-                bloodPressure: {
-                    systolic: systolicStatus,
-                    diastolic: diastolicStatus,
-                }
-            }
+    //         el.results.status = {
+    //             glucose: glucoseStatus,
+    //             ch_total: cholesterolTotalStatus,
+    //             ch_ldl: ldlStatus,
+    //             ch_hdl: hdlStatus,
+    //             bd_systolic: systolicStatus,
+    //             bd_diastolic: diastolicStatus,
 
-            return el
+    //         }
 
-        })
-        console.log(status);
+    //         return el
 
-    }
+    //     })
 
-    generateStatus()
+    // }
+    // generateStatus()
 
     return (
         <Card className=" p-6 gap-4 overflow-auto">
@@ -108,13 +93,6 @@ export function TableDashboard() {
                         <TableHead className="py-5 ">
                             <>
                                 Date
-                                <br />
-                                <span className="text-sm text-muted-foreground">-</span>
-                            </>
-                        </TableHead>
-                        <TableHead className="text-center">
-                            <>
-                                Status
                                 <br />
                                 <span className="text-sm text-muted-foreground">-</span>
                             </>
@@ -153,8 +131,7 @@ export function TableDashboard() {
                                         month: "short", // atau "2-digit" untuk angka
                                         day: "2-digit",
                                     })}</TableCell>
-                                    <TableCell className="text-center">      <Badge variant="destructive">Badge</Badge>
-                                    </TableCell>
+                                    
                                     <TableCell className="text-center">{`${el.results.glucose}`}</TableCell>
                                     <TableCell className="text-center">
                                         <div className="flex flex-col gap-2">

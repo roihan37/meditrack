@@ -17,6 +17,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { useAuthContext } from "@/context/AuthContext"
+import { formatDate } from "date-fns"
 
 export const description = "A line chart with a label"
 
@@ -30,17 +32,26 @@ const chartData = [
 ]
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  glucose: {
+    label: "Glucose",
     color: "var(--chart-1)",
   },
-  mobile: {
-    label: "Mobile",
+  cholesterol: {
+    label: "Cholesterol",
     color: "var(--chart-2)",
   },
 } satisfies ChartConfig
 
 export function ChartHistories() {
+  const { results }  = useAuthContext()
+  const chartData = results.map((el) => ({
+    month: formatDate(new Date(el.date), "LLLL"),
+    glucose: el.results.glucose,
+    cholesterol: el.results.cholesterol.total,
+    systolic: el.results.bloodPressure.systolic,
+    diastolic: el.results.bloodPressure.diastolic
+  }));
+
   return (
     <Card>
       <CardHeader>
@@ -70,13 +81,14 @@ export function ChartHistories() {
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
             />
+
             <Line
-              dataKey="desktop"
+              dataKey="cholesterol"
               type="natural"
-              stroke="var(--color-desktop)"
+              stroke="var(--color-cholesterol)"
               strokeWidth={2}
               dot={{
-                fill: "var(--color-desktop)",
+                fill: "var(--color-cholesterol)",
               }}
               activeDot={{
                 r: 6,
@@ -89,7 +101,30 @@ export function ChartHistories() {
                 fontSize={12}
               />
             </Line>
+
+            <Line
+              dataKey="glucose"
+              type="natural"
+              stroke="var(--color-glucose)"
+              strokeWidth={2}
+              dot={{
+                fill: "var(--color-glucose)",
+              }}
+              activeDot={{
+                r: 6,
+              }}
+            >
+              <LabelList
+                position="top"
+                offset={12}
+                className="fill-foreground"
+                fontSize={12}
+              />
+            </Line>
+
+            
           </LineChart>
+          
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">

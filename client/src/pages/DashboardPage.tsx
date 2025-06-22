@@ -1,6 +1,6 @@
 import { AppSidebar } from "@/components/app-sidebar"
 import { ChartAreaInteractive } from "@/components/chart-area-interactive"
-import { DataTable } from "@/components/data-table"
+import { DataTableDemo } from "@/components/data-table"
 import { SectionCards } from "@/components/section-cards"
 import { SiteHeader } from "@/components/site-header"
 import {
@@ -30,13 +30,7 @@ export default function DashboardPage() {
             </div>
             <CholesterolCard  />
           </div>
-
-          {/* <div className=" flex xl:flex-row gap-4 flex-col-reverse">
-
-            <CholesterolCard />
-          </div> */}
           <TableDashboard />
-          <DataTable data={data} />
           
        
     </>

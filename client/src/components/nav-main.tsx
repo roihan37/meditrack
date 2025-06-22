@@ -7,7 +7,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 export function NavMain({
   items,
@@ -20,6 +20,7 @@ export function NavMain({
 }) {
 
   const navigate = useNavigate()
+  const location = useLocation();
 
   return (
     <SidebarGroup>
@@ -27,6 +28,7 @@ export function NavMain({
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
             <SidebarMenuButton
+            onClick={() => navigate('/add-result')}
               tooltip="Quick Create"
               className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
             >
@@ -37,11 +39,11 @@ export function NavMain({
         </SidebarMenu>
         <SidebarMenu>
           {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title}
+            <SidebarMenuItem className="" key={item.title}>
+              <SidebarMenuButton className={location.pathname===item.url?'bg-zinc-200 font-semibold':'hover:bg-zinc-100'} tooltip={item.title}
               onClick={() => navigate(item.url)}
               >
-                {item.icon && <item.icon />}
+                {item.icon && <item.icon strokeWidth={location.pathname===item.url?2.5:2}/>}
                 <span>{item.title}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
