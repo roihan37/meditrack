@@ -25,6 +25,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Input } from "@/components/ui/input"
+import { Icon12Hours, IconActivityHeartbeat } from "@tabler/icons-react"
 
 const FormSchema = z.object({
   date: z.date({
@@ -79,37 +80,84 @@ export function DatePickerForm() {
 
 
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data, '<<<<form data ');
-
-    toast("You submitted the following values", {
-      description: (
-        <Button
-      variant="outline"
-      onClick={() =>
-        toast("Event has been created", {
-          description: "Sunday, December 03, 2023 at 9:00 AM",
-          action: {
-            label: "Undo",
-            onClick: () => console.log("Undo"),
-          },
-        })
+  async function onSubmit(data: z.infer<typeof FormSchema>)  {
+    const date = new Date(data.date);
+    const formattedDate = date.toISOString().split('T')[0];
+    const addReultForm = {
+      date: formattedDate,
+      results: {
+        glucose: data.glucose,
+        cholesterol: {
+          ldl: data.ldl,
+          hdl: data.hdl,
+          total: (data.hdl + data.ldl),
+        },
+        bloodPressure: {
+          systolic: data.systolic,
+          diastolic: data.diastolic
+        }
       }
-    >
-      Show Toast
-    </Button>
-      ),
-    })
+    }
+    const toastId = toast.loading("🧬 Adding your result...", {
+      position: "top-right",
+      description: "Please wait while we save your medical data.",
+      duration: 999999, // tidak auto close
+    });
+
+    try {
+            const access_token = localStorage.getItem("access_token")
+            const headers: HeadersInit = {
+              'Content-Type': 'application/json',
+            }
+          
+            if (access_token) {
+              headers["access_token"] = access_token
+            }
+
+            const response = await fetch('http://localhost:3000/lab-results',{
+            method : 'POST',
+            headers,
+            body : JSON.stringify(addReultForm)
+            })
+
+            const responseJson = await response.json()
+            if(!response.ok){
+                throw new Error(responseJson.message)
+            }
+              
+          
+    toast.success("Result added successfully!", {
+      id: toastId,
+      position: "top-right",
+      description: "Your latest health data has been saved.",
+      duration : 10000
+    });
+            
+            
+              
+            // navigate('/') 
+            
+        } catch (error) {
+          toast.error("❌ Failed to add result", {
+            id: toastId,
+            position: "top-right",
+            description: "Please try again later.",
+          });
+      
+        }
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mt-9">
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
         <FormField
           control={form.control}
           name="date"
           render={({ field }) => (
-            <FormItem className="flex flex-col">
+            <FormItem className="flex flex-col ">
               <div className="flex flex-row justify-between h-5 items-end">
                 <FormLabel>Checkup Date</FormLabel>
                 <FormMessage />
@@ -148,7 +196,7 @@ export function DatePickerForm() {
             </FormItem>
           )}
         />
-
+        <div></div>
         <FormField
           control={form.control}
           name="glucose"
@@ -175,57 +223,70 @@ export function DatePickerForm() {
             </FormItem>
           )}
         />
-
-        <FormField
-          control={form.control}
-          name="hdl"
-          render={({ field }) => (
-            <FormItem>
-              <div className="flex flex-row justify-between h-4 items-end">
-                <FormLabel>Cholesterol</FormLabel>
+         <div></div>
+        
+      
+        
+        
+       
+          <FormField
+            control={form.control}
+            name="hdl"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex flex-row justify-between h-4 items-end cols-span-2">
+                <FormLabel className="-mb-">Cholesterol</FormLabel>
                 <FormMessage />
               </div>
-              <FormControl>
-                <Input placeholder="High-Density Lipoprotein" type="number"
-                  {...field}
-                  value={field.value || ""}
-                  onChange={(e) => {
-                    const value = e.target.value.replace(/^0+/, "")
-                    field.onChange(value ? Number(value) : "")
-                  }}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+                <FormControl>
+                  <Input placeholder="High-Density Lipoprotein" type="number"
+                    {...field}
+                    value={field.value || ""}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/^0+/, "")
+                      field.onChange(value ? Number(value) : "")
+                    }}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="ldl"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="Low-Density Lipoprotein" type="number"
-                  {...field}
-                  value={field.value || ""}
-                  onChange={(e) => {
-                    const value = e.target.value.replace(/^0+/, "")
-                    field.onChange(value ? Number(value) : "")
-                  }}
-                />
-              </FormControl>
+          <FormField
+            control={form.control}
+            name="ldl"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex flex-row justify-between h-4 items-end">
+                {/* <FormLabel>LDL</FormLabel> */}
+                <FormMessage />
+              </div>
+                <FormControl>
+                  <Input placeholder="Low-Density Lipoprotein" type="number"
+                    {...field}
+                    value={field.value || ""}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/^0+/, "")
+                      field.onChange(value ? Number(value) : "")
+                    }}
+                  />
+                </FormControl>
 
-            </FormItem>
-          )}
-        />
+              </FormItem>
+            )}
+          />
+     
 
+
+        
+       
         <FormField
           control={form.control}
           name="systolic"
           render={({ field }) => (
             <FormItem>
               <div className="flex flex-row justify-between h-4 items-end">
-                <FormLabel>Blood Pressure</FormLabel>
+              <FormLabel>Blood Pressure</FormLabel>
                 <FormMessage />
               </div>
               <FormControl>
@@ -238,6 +299,7 @@ export function DatePickerForm() {
                   }}
                 />
               </FormControl>
+              
 
             </FormItem>
           )}
@@ -248,6 +310,10 @@ export function DatePickerForm() {
           name="diastolic"
           render={({ field }) => (
             <FormItem>
+              <div className="flex flex-row justify-between h-4 items-end">
+                
+                <FormMessage />
+              </div>
               <FormControl>
                 <Input placeholder="Diastolic" type="number"
                   {...field}
@@ -258,12 +324,13 @@ export function DatePickerForm() {
                   }}
                 />
               </FormControl>
-              <FormMessage />
+              
             </FormItem>
           )}
         />
+        </div>
 
-        <Button type="submit" className="w-full">Submit</Button>
+        <Button type="submit" className="mt-10">Submit</Button>
       </form>
     </Form>
   )

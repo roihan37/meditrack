@@ -24,6 +24,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { useAuthContext } from "@/context/AuthContext"
+import { useNavigate } from "react-router-dom"
+import { Button } from "./ui/button"
 
 export function NavUser({
   user,
@@ -35,6 +38,17 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const { logout } = useAuthContext()
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e : React.FormEvent) => {
+    
+      e.preventDefault()
+
+      logout()
+      navigate('/login')
+    
+  }
 
   return (
     <SidebarMenu>
@@ -86,9 +100,11 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <IconLogout />
-              Log out
+            <DropdownMenuItem onClick={handleSubmit}>
+              
+                <IconLogout />
+                Log out
+            
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

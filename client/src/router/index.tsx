@@ -6,6 +6,8 @@ import { lazy, Suspense } from "react";
 // import { HistoriesPage } from "@/pages/HistoriesPage";
 // import { AddResultPage } from "@/pages/AddResultPage";
 import { BaseLayout } from "@/layouts/BaseLayout";
+import { Progress } from "@/components/ui/progress";
+import FallbackLoader from "@/components/FallbackLoader";
 const DashboardPage = lazy(() => import("@/pages/DashboardPage"));
 const HistoriesPage = lazy(() => import("@/pages/HistoriesPage"));
 const AddResultPage = lazy(() => import("@/pages/AddResultPage"));
@@ -21,7 +23,7 @@ const router = createBrowserRouter([
         {
           path: "/",
           element: (
-            <Suspense fallback={<p>Loading dashboard...</p>}>
+            <Suspense fallback={<FallbackLoader />}>
               <DashboardPage />
             </Suspense>
           ),
@@ -29,7 +31,7 @@ const router = createBrowserRouter([
         {
           path: "/histories",
           element: (
-            <Suspense fallback={<p>Loading histories...</p>}>
+            <Suspense fallback={<FallbackLoader />}>
               <HistoriesPage />
             </Suspense>
           ),
@@ -37,7 +39,7 @@ const router = createBrowserRouter([
         {
           path: "/add-result",
           element: (
-            <Suspense fallback={<p>Loading form...</p>}>
+            <Suspense fallback={<FallbackLoader />}>
               <AddResultPage />
             </Suspense>
           ),

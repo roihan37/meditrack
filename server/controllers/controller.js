@@ -87,6 +87,7 @@ class Controller {
             });
             res.status(201).json(labResult);
         } catch (error) {
+            console.log(error);
             next(error)
         }
     }

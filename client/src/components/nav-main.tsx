@@ -30,17 +30,17 @@ export function NavMain({
             <SidebarMenuButton
             onClick={() => navigate('/add-result')}
               tooltip="Quick Create"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
+              className="bg-purple-900 py-4 text-primary-foreground hover:bg-purple-900 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
             >
               <IconCirclePlusFilled />
               <span>Create Result Lab</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-        <SidebarMenu>
+        <SidebarMenu >
           {items.map((item) => (
-            <SidebarMenuItem className="" key={item.title}>
-              <SidebarMenuButton className={location.pathname===item.url?'bg-zinc-200 font-semibold':'hover:bg-zinc-100'} tooltip={item.title}
+            <SidebarMenuItem key={item.title}>
+              <SidebarMenuButton className={` py-5 ${location.pathname===item.url?'bg-purple-100 text-purple-700 font-normal ':'hover:bg-zinc-100'}`} tooltip={item.title}
               onClick={() => navigate(item.url)}
               >
                 {item.icon && <item.icon strokeWidth={location.pathname===item.url?2.5:2}/>}

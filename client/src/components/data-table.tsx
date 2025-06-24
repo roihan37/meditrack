@@ -13,7 +13,7 @@ import {
   useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, ChevronDown, ClipboardMinus, MoreHorizontal, Repeat2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -36,6 +36,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { useAuthContext } from "@/context/AuthContext"
+import { IconChevronDown, IconLayoutColumns, IconPlus } from "@tabler/icons-react"
+import { Badge } from "./ui/badge"
 
 
 
@@ -47,8 +49,8 @@ export type LabResult = {
   ch_hdl: number
   ch_ldl: number
   ch_total: number
-  bp_systolic : number
-  bp_diastolic : number
+  bp_systolic: number
+  bp_diastolic: number
 }
 
 export const columns: ColumnDef<LabResult>[] = [
@@ -61,7 +63,7 @@ export const columns: ColumnDef<LabResult>[] = [
     header: "Glucose",
   },
   {
-    id: "cholesterol", // ✅ id manual
+    accessorKey: "cholesterol", // ✅ id manual
     header: "Cholesterol",
     cell: ({ row }) => {
       const { ch_hdl, ch_ldl } = row.original;
@@ -74,7 +76,7 @@ export const columns: ColumnDef<LabResult>[] = [
     },
   },
   {
-    id: "bloodPressure", // ✅ id manual
+    accessorKey: "bloodPressure", // ✅ id manual
     header: "Blood Pressure",
     cell: ({ row }) => {
       const { bp_systolic, bp_diastolic } = row.original;
@@ -90,24 +92,21 @@ export const columns: ColumnDef<LabResult>[] = [
 
 
 export function DataTableDemo() {
-  const { results }  = useAuthContext()
-  
-  const data : LabResult[] = results.map((el)=>{
-    let newDate ={
+  const { results } = useAuthContext()
+
+  const data: LabResult[] = React.useMemo(() => {
+    return results.map((el) => ({
       id: el.id,
-      date : el.date,
+      date: el.date,
       glucose: el.results.glucose,
       ch_hdl: el.results.cholesterol.hdl,
       ch_ldl: el.results.cholesterol.ldl,
       ch_total: el.results.cholesterol.total,
-      bp_systolic : el.results.bloodPressure.systolic,
-      bp_diastolic : el.results.bloodPressure.diastolic
-    }
-    return(
-      newDate
-    )
-  })
-  
+      bp_systolic: el.results.bloodPressure.systolic,
+      bp_diastolic: el.results.bloodPressure.diastolic,
+    }))
+  }, [results])
+
 
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -138,27 +137,76 @@ export function DataTableDemo() {
 
   return (
     <div className="w-full">
+      <div className="flex items-center gap-2">
+        <div className="flex flex-row items-center justify-between w-full mb-4 mt-5">
+          <div className="flex flex-row items-center gap-2">
+            <Repeat2 className="text-purple-700 w-9 h-9" />
+            <h1 className="text-3xl font-normal ">
+              Medical Checkup History
+            </h1>
+          </div>
+          <div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <IconLayoutColumns />
+                  <span className="hidden lg:inline">Customize Columns</span>
+                  <span className="lg:hidden">Columns</span>
+                  <IconChevronDown />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                {table
+                  .getAllColumns()
+                  .filter(
+                    (column) =>
+                      typeof column.accessorFn !== "undefined" &&
+                      column.getCanHide()
+                  )
+                  .map((column) => {
+                    return (
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        className="capitalize"
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value) =>
+                          column.toggleVisibility(!!value)
+                        }
+                      >
+                        {column.id}
+                      </DropdownMenuCheckboxItem>
+                    )
+                  })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Button className="ml-2" variant="outline" size="sm">
+              <IconPlus />
+              <span className="hidden lg:inline">Add Section</span>
+            </Button>
+          </div>
+        </div>
+      </div>
       <div className="rounded-md border">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-zinc-100 " >
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead className="text-center" key={header.id}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   )
                 })}
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className="text-center">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow

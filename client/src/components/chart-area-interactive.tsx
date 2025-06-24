@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import {
@@ -10,7 +10,8 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
- 
+  CardTitle,
+
 } from "@/components/ui/card"
 import {
   type ChartConfig,
@@ -31,43 +32,24 @@ import {
 } from "@/components/ui/toggle-group"
 import { useAuthContext } from "@/context/AuthContext"
 import { formatDate } from "date-fns"
+import { ClipboardMinus, GitCommitVertical } from "lucide-react"
+import { Badge } from "./ui/badge"
 
 export const description = "An interactive area chart"
-
-
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
   glucose: {
-    label: "Glucose ",
-    color: "var(--primary)",
-  },
-  cholesterol: {
-    label: <span style={{marginRight:"10px"}}>Cholesterol</span>,
-    color: "var(--primary)",
-  },
-  systolic: {
-    label: "BP Systolic ",
-    color: "var(--primary)",
-  },
-  diastolic: {
-    label: "BP Diastolic ",
-    color: "var(--primary)",
-  },
+    label: "Glucose",
+    color: "oklch(55.8% 0.288 302.321)",
+  }
 } satisfies ChartConfig
 
 export function ChartAreaInteractive() {
-  const { results }  = useAuthContext()
-  const sortedResults = [...results].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-  const chartData = sortedResults.map((el) => ({
+  const { results } = useAuthContext()
+  const chartData = results.map((el) => ({
     date: formatDate(new Date(el.date), "yyyy-MM-dd"),
     glucose: el.results.glucose,
-    cholesterol: el.results.cholesterol.total,
-    systolic: el.results.bloodPressure.systolic,
-    diastolic: el.results.bloodPressure.diastolic
   }));
-  
+
   const isMobile = useIsMobile()
   const [timeRange, setTimeRange] = React.useState("90d")
 
@@ -77,9 +59,9 @@ export function ChartAreaInteractive() {
     }
   }, [isMobile])
 
+  const referenceDate = new Date(chartData[0].date)
   const filteredData = chartData.filter((item) => {
     const date = new Date(item.date)
-    const referenceDate = new Date("2024-06-30")
     let daysToSubtract = 90
     if (timeRange === "30d") {
       daysToSubtract = 30
@@ -93,17 +75,22 @@ export function ChartAreaInteractive() {
 
   return (
     <Card className="@container/card h-full justify-between">
-
-      <CardHeader className="gap-3">
-        <h1 className="text-2xl">Health Analytics</h1>
-
-        <CardDescription>
-          <span className="hidden @[540px]/card:block">
-            Total for the last 3 months
-          </span>
-          <span className="@[540px]/card:hidden">Last 3 months</span>
-        </CardDescription>
-
+      <CardHeader>
+        <div className="flex flex-row items-center gap-2">
+          <Badge className="bg-purple-100 p-3" variant="outline">
+            <ClipboardMinus className="text-purple-700" />
+          </Badge>
+          <div>
+            <CardTitle>Glucose Tracker</CardTitle>
+            <CardDescription className="mt-1">
+              <span className="hidden @[540px]/card:block">
+                Total for the last 3 months
+              </span>
+              <span className="@[540px]/card:hidden">Last 3 months</span>
+            </CardDescription>
+          </div>
+        </div>
+        <CardDescription className="ml-11 text-lime-400">-20% Decrease</CardDescription>
         <CardAction>
           <ToggleGroup
             type="single"
@@ -137,40 +124,21 @@ export function ChartAreaInteractive() {
             </SelectContent>
           </Select>
         </CardAction>
-
       </CardHeader>
+
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
         <ChartContainer
           config={chartConfig}
           className="aspect-auto h-[250px] w-full"
         >
-          <AreaChart data={filteredData}>
-            <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-desktop)"
-                  stopOpacity={1.0}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-desktop)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-mobile)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-mobile)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-            </defs>
+          <LineChart
+            accessibilityLayer
+            data={filteredData}
+            margin={{
+              left: 12,
+              right: 12,
+            }}
+          >
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="date"
@@ -187,50 +155,41 @@ export function ChartAreaInteractive() {
               }}
             />
             <ChartTooltip
-              cursor={false}
-              defaultIndex={isMobile ? -1 : 10}
               content={
                 <ChartTooltipContent
                   labelFormatter={(value) => {
                     return new Date(value).toLocaleDateString("en-US", {
-                      month: "short",
                       day: "numeric",
+                      month: "long",
                       year: "numeric",
                     })
                   }}
-                  indicator="dot"
                 />
               }
+              cursor={false}
+              defaultIndex={1}
             />
-            <Area
+            <Line
               dataKey="glucose"
               type="natural"
-              fill="url(#fillMobile)"
-              stroke="var(--color-mobile)"
-              stackId="a"
+              stroke="var(--color-glucose)"
+              strokeWidth={2}
+              dot={({ cx, cy, payload }) => {
+                const r = 24
+                return (
+                  <GitCommitVertical
+                    key={payload.month}
+                    x={cx - r / 2}
+                    y={cy - r / 2}
+                    width={r}
+                    height={r}
+                    fill="hsl(var(--background))"
+                    stroke="var(--color-glucose)"
+                  />
+                )
+              }}
             />
-            <Area
-              dataKey="cholesterol"
-              type="natural"
-              fill="url(#fillDesktop)"
-              stroke="var(--color-desktop)"
-              stackId="a"
-            />
-             <Area
-              dataKey="systolic"
-              type="natural"
-              fill="url(#fillDesktop)"
-              stroke="var(--color-desktop)"
-              stackId="a"
-            />
-             <Area
-              dataKey="diastolic"
-              type="natural"
-              fill="url(#fillDesktop)"
-              stroke="var(--color-desktop)"
-              stackId="a"
-            />
-          </AreaChart>
+          </LineChart>
         </ChartContainer>
       </CardContent>
     </Card>

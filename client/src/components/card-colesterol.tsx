@@ -2,51 +2,46 @@
 import {
     Card,
     CardDescription,
+    CardTitle,
 } from "@/components/ui/card"
-import { ChartBarCholesterol } from "./chart-bar-cholesterol"
-import type { Cholesterol, PropsResultLab } from "@/types/lab"
-import { useAuthContext } from "@/context/AuthContext"
+import { ChartBarMixed } from "./chart-bar-cholesterol"
+import { Badge } from "./ui/badge"
+import { Dna, HeartPulse, SquareActivity } from "lucide-react"
 
 export function CholesterolCard() {
-    const { results }  = useAuthContext()
-    const cholest : Cholesterol   = results?.[0].results.cholesterol
-    
     return (
-        <div  >
-
-            <Card className="p-6 h-full gap-5" >
-                <h1 className="text-2xl">Latest Cholesterol</h1>
+        <div>
+            <Card className="p-6  h-full gap-5 " >
+                <div className="flex flex-row justify-between items-start">
+                    <div className="flex flex-col items-start gap-2">
+                        <div className="flex flex-row gap-2 items-center">
+                            <SquareActivity className=" text-purple-700" />
+                            <CardTitle className="font-light text-2xl">Latest Checkup Summary</CardTitle>
+                        </div>
+                        <div >
+                            <div className="flex  flex-row items-center gap-2">
+                                <Badge className="bg-pink-100" variant="outline">
+                                    <HeartPulse className=" text-pink-700" />
+                                </Badge>
+                                <CardDescription className="text-xs">Blood Pressure</CardDescription>
+                            </div>
+                            <div className="flex flex-row items-center gap-2 mt-1">
+                                <Badge className="bg-fuchsia-100 " variant="outline">
+                                    <Dna className="text-fuchsia-700" />
+                                </Badge>
+                                <CardDescription className="text-xs">Cholesterol</CardDescription>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div className="flex justify-center ">
                     <div className="w-full max-w-[300px] aspect-square bg-zinc-50 rounded-full flex items-center justify-center">
-                    <div className="w-2/3 aspect-square bg-zinc-100 rounded-full flex items-center justify-center p-2">
-                        <img src="/heart.png" alt="Logo" className="w-full h-full object-contain" />
-                    </div>  
-                </div>
-                </div>
-                <div className="flex flex-row gap-2">
-                    <Card className="px-2 gap-3 w-full">
-                        <CardDescription className="text-xs ">Low-Density Lipoprotein</CardDescription>
-                        <div className="flex flex-row items-end gap-2">
-                            <h1 className="text-2xl">{cholest?.ldl}</h1>
-                            <CardDescription className="text-sm">mg/dL</CardDescription>
+                        <div className="w-2/3 aspect-square bg-zinc-100 rounded-full flex items-center justify-center p-2">
+                            <img src="/heart.png" alt="Logo" className="w-full h-full object-contain" />
                         </div>
-                    </Card>
-                    <Card className="px-2 gap-3 w-full">
-                        <CardDescription className="text-xs ">High-Density Lipoprotein</CardDescription>
-                        <div className="flex flex-row items-end gap-2">
-                            <h1 className="text-2xl">{cholest?.hdl}</h1>
-                            <CardDescription className="text-sm">mg/dL</CardDescription>
-                        </div>
-                    </Card>
-                    <Card className="px-2 gap-3 w-full">
-                        <CardDescription className="text-xs " >Total Cholesterol</CardDescription>
-                        <div className="flex flex-row items-end gap-2">
-                            <h1 className="text-2xl">{cholest?.total}</h1>
-                            <CardDescription className="text-sm">mg/dL</CardDescription>
-                        </div>
-                    </Card>
+                    </div>
                 </div>
-                <ChartBarCholesterol cholesterol={cholest} />
+                <ChartBarMixed />
             </Card>
 
         </div>

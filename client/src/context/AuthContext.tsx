@@ -9,7 +9,8 @@ type AuthContextType = {
   logout: () => void;
   user : User | null,
   loading : boolean,
-  results : ResultLab[] | []
+  results: ResultLab[];
+  setResults: React.Dispatch<React.SetStateAction<ResultLab[]>>;
 };
 
 
@@ -72,7 +73,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   
   return (
-    <AuthContext.Provider value={{ login, logout, user, loading, results }}>
+    <AuthContext.Provider value={{ login, logout, user, loading, results, setResults }}>
       {children}
     </AuthContext.Provider>
   );

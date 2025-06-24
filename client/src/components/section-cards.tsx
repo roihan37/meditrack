@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card"
 import type {  ResultLab } from "@/types/lab"
 import { useAuthContext } from "@/context/AuthContext"
+import { ClipboardMinus, Dna, HeartPulse } from "lucide-react"
 
 
 
@@ -23,9 +24,8 @@ export function SectionCards( ) {
         <div className="flex justify-between items-center gap-2">
           <CardDescription className="font-normal text-sm text-zinc-900" >Glucose</CardDescription>
           <CardAction>
-            <Badge variant="outline">
-              <IconTrendingDown />
-              -20%
+            <Badge className="bg-purple-100 p-2" variant="outline">
+              <ClipboardMinus className="text-purple-700" />
             </Badge>
           </CardAction>
         </div>
@@ -45,9 +45,8 @@ export function SectionCards( ) {
         <div className="flex justify-between items-center gap-2">
           <CardDescription className="font-normal text-sm text-zinc-900" >Total Cholesterol</CardDescription>
           <CardAction>
-            <Badge variant="outline">
-              <IconTrendingDown />
-              -20%
+            <Badge className="bg-fuchsia-100 p-2" variant="outline">
+              <Dna className="text-fuchsia-700"/>
             </Badge>
           </CardAction>
         </div>
@@ -69,9 +68,8 @@ export function SectionCards( ) {
         <div className="flex justify-between items-center gap-2">
           <CardDescription className="font-normal text-sm text-zinc-900" >Blood Pressure</CardDescription>
           <CardAction>
-            <Badge variant="outline">
-              <IconTrendingDown />
-              -20%
+            <Badge className="bg-pink-100 p-2" variant="outline">
+              <HeartPulse className="w-24 h-24 text-pink-700"/>
             </Badge>
           </CardAction>
         </div>

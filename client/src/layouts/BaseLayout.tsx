@@ -3,7 +3,6 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
 import { ProtectedRoute } from "@/context/ProtectedRoute";
-import { Toaster } from "sonner";
 
 
 export function BaseLayout() {
@@ -17,8 +16,7 @@ export function BaseLayout() {
       >
         <AppSidebar variant="inset" />
         <SidebarInset>
-          <SiteHeader />
-          <Toaster position="top-right" />
+          <SiteHeader/>
           <Outlet />
         </SidebarInset>
       </SidebarProvider>

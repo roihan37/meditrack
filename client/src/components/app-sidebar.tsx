@@ -2,7 +2,6 @@ import * as React from "react"
 import {
   IconChartBar,
   IconDashboard,
-  IconInnerShadowTop,
   IconListDetails,
 } from "@tabler/icons-react"
 
@@ -17,37 +16,37 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { useLocation } from "react-router-dom"
-
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/",
-      icon: IconDashboard,
-    },
-    {
-      title: "Histories",
-      url: "/histories",
-      icon: IconListDetails,
-    },
-    {
-      title: "Analytics",
-      url: "#",
-      icon: IconChartBar,
-    }
-  ]
-}
+import { Activity } from "lucide-react"
+import { useAuthContext } from "@/context/AuthContext"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const location = useLocation();
-  console.log("Current route:", location.pathname);
-  
+  const {user} = useAuthContext()
+
+  const data = {
+    user: {
+      name: `${user?.username}`,
+      email: `${user?.email}`,
+      avatar: "/avatars/shadcn.jpg",
+    },
+    navMain: [
+      {
+        title: "Dashboard",
+        url: "/",
+        icon: IconDashboard,
+      },
+      {
+        title: "Histories",
+        url: "/histories",
+        icon: IconListDetails,
+      },
+      {
+        title: "Analytics",
+        url: "#",
+        icon: IconChartBar,
+      }
+    ]
+  }
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -58,14 +57,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <a href="#">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Medical Track</span>
+                {/* <IconInnerShadowTop className="!size-10" /> */}
+                <div className="bg-purple-700 text-primary-foreground flex size-6 items-center justify-center rounded-md">
+                  <Activity className="size-4" />
+                </div>
+                <span className="text-xl font-semibold">Medictrack</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent >
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
