@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/sidebar"
 import { useAuthContext } from "@/context/AuthContext"
 import { useNavigate } from "react-router-dom"
-import { Button } from "./ui/button"
+import { toast } from "sonner"
 
 export function NavUser({
   user,
@@ -44,10 +44,16 @@ export function NavUser({
   const handleSubmit = async (e : React.FormEvent) => {
     
       e.preventDefault()
-
+      const toastId = toast.loading("Logging out...", {
+        position: "top-right",
+      })
       logout()
       navigate('/login')
-    
+      toast.success("Successfully logged out!", {
+        id: toastId,
+        position: "top-right",
+      })
+  
   }
 
   return (

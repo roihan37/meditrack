@@ -4,7 +4,7 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 
-import { AuthForm } from "@/components/auth-form"
+import { AuthForm } from "@/components/form-auth"
 import { Activity } from "lucide-react"
 
 

@@ -1,5 +1,5 @@
 import { Activity } from "lucide-react"
-import { AuthForm } from "@/components/auth-form"
+import { AuthForm } from "@/components/form-auth"
 import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 
 

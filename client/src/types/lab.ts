@@ -1,7 +1,7 @@
 export type ResultLab = {
-  id: string,
-  userId: string,
-  date: Date,
+  id?: string ,
+  userId?: string ,
+  date: Date | string,
   results: {
     glucose: number,
     cholesterol: {
@@ -38,6 +38,17 @@ export type Cholesterol = {
 
 export type PropsCholesterol = {
   cholesterol: Cholesterol;
+}
+
+export type TableLabResult = {
+  id: string | undefined
+  date: Date | string
+  glucose: number
+  ch_hdl: number
+  ch_ldl: number
+  ch_total: number
+  bp_systolic: number
+  bp_diastolic: number
 }
 
 

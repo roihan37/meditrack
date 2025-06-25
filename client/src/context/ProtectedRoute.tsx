@@ -1,12 +1,12 @@
 import { Navigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
-import FallbackLoader from "@/components/FallbackLoader";
+import FallbackLoader from "@/components/fallback-loader";
 
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuthContext();
 
-  if (loading) return <FallbackLoader/>; // bisa diganti skeleton
+  if (loading) return <FallbackLoader />; // bisa diganti skeleton
   if (!user) return <Navigate to="/login" />;
 
   return children;

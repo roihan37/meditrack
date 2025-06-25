@@ -10,8 +10,9 @@ import { Dna, HeartPulse, SquareActivity } from "lucide-react"
 
 export function CholesterolCard() {
     return (
-        <div>
             <Card className="p-6  h-full gap-5 " >
+
+                {/* HEADER */}
                 <div className="flex flex-row justify-between items-start">
                     <div className="flex flex-col items-start gap-2">
                         <div className="flex flex-row gap-2 items-center">
@@ -34,6 +35,8 @@ export function CholesterolCard() {
                         </div>
                     </div>
                 </div>
+
+                {/* IMAGE */}
                 <div className="flex justify-center ">
                     <div className="w-full max-w-[300px] aspect-square bg-zinc-50 rounded-full flex items-center justify-center">
                         <div className="w-2/3 aspect-square bg-zinc-100 rounded-full flex items-center justify-center p-2">
@@ -41,9 +44,11 @@ export function CholesterolCard() {
                         </div>
                     </div>
                 </div>
+
                 <ChartBarMixed />
+                
             </Card>
 
-        </div>
+        
     )
 }

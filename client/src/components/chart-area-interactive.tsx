@@ -75,6 +75,7 @@ export function ChartAreaInteractive() {
 
   return (
     <Card className="@container/card h-full justify-between">
+      
       <CardHeader>
         <div className="flex flex-row items-center gap-2">
           <Badge className="bg-purple-100 p-3" variant="outline">

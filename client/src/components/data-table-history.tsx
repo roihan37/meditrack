@@ -13,20 +13,15 @@ import {
   useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, ClipboardMinus, MoreHorizontal, Repeat2 } from "lucide-react"
+import { Repeat2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
 import {
   Table,
   TableBody,
@@ -37,23 +32,9 @@ import {
 } from "@/components/ui/table"
 import { useAuthContext } from "@/context/AuthContext"
 import { IconChevronDown, IconLayoutColumns, IconPlus } from "@tabler/icons-react"
-import { Badge } from "./ui/badge"
+import type { TableLabResult } from "@/types/lab"
 
-
-
-export type LabResult = {
-  id: string
-  date: Date
-  // status: object
-  glucose: number
-  ch_hdl: number
-  ch_ldl: number
-  ch_total: number
-  bp_systolic: number
-  bp_diastolic: number
-}
-
-export const columns: ColumnDef<LabResult>[] = [
+export const columns: ColumnDef<TableLabResult>[] = [
   {
     accessorKey: "date",
     header: "Date",
@@ -91,10 +72,10 @@ export const columns: ColumnDef<LabResult>[] = [
 ];
 
 
-export function DataTableDemo() {
+export function DataTableHistory() {
   const { results } = useAuthContext()
 
-  const data: LabResult[] = React.useMemo(() => {
+  const data: TableLabResult[] = React.useMemo(() => {
     return results.map((el) => ({
       id: el.id,
       date: el.date,
@@ -137,7 +118,8 @@ export function DataTableDemo() {
 
   return (
     <div className="w-full">
-      <div className="flex items-center gap-2">
+      
+        {/* header */}
         <div className="flex flex-row items-center justify-between w-full mb-4 mt-5">
           <div className="flex flex-row items-center gap-2">
             <Repeat2 className="text-purple-700 w-9 h-9" />
@@ -185,7 +167,8 @@ export function DataTableDemo() {
             </Button>
           </div>
         </div>
-      </div>
+
+      {/* body/table */}
       <div className="rounded-md border">
         <Table>
           <TableHeader className="bg-zinc-100 " >
@@ -236,10 +219,11 @@ export function DataTableDemo() {
           </TableBody>
         </Table>
       </div>
+
+      {/* footer */}
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-muted-foreground flex-1 text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+        Showing {table.getRowModel().rows.length} of {table.getPrePaginationRowModel().rows.length} results lab | Page {table.getState().pagination.pageIndex + 1}
         </div>
         <div className="space-x-2">
           <Button

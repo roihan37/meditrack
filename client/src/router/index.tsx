@@ -3,15 +3,11 @@ import { createBrowserRouter } from "react-router-dom";
 import { LoginPage } from "@/pages/LoginPage";
 import { SignupPage } from "@/pages/SignupPage";
 import { lazy, Suspense } from "react";
-// import { HistoriesPage } from "@/pages/HistoriesPage";
-// import { AddResultPage } from "@/pages/AddResultPage";
 import { BaseLayout } from "@/layouts/BaseLayout";
-import { Progress } from "@/components/ui/progress";
-import FallbackLoader from "@/components/FallbackLoader";
+import FallbackLoader from "@/components/fallback-loader";
 const DashboardPage = lazy(() => import("@/pages/DashboardPage"));
 const HistoriesPage = lazy(() => import("@/pages/HistoriesPage"));
 const AddResultPage = lazy(() => import("@/pages/AddResultPage"));
-// const BaseLayout = lazy(() => import("@/components/BaseLayout"));
 
 const router = createBrowserRouter([
   {

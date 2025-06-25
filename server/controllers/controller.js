@@ -79,15 +79,28 @@ class Controller {
     static async addLabResult(req, res, next){
         try {
             const { date, results } = req.body;
-
+            console.log(date)
+            const findSameDate = await LabResult.findOne(
+                {
+                    where:{
+                        date
+                    }
+                }
+            )
+            // console.log(findSameDate.dataValues.date,"same date", date,'date now');
+            if(findSameDate){
+                throw { name: "Conflict" }
+            }
             const labResult = await LabResult.create({
             userId: req.userLogin.id,
             date,
             results
             });
+
             res.status(201).json(labResult);
         } catch (error) {
-            console.log(error);
+
+            console.log(error, '<<<< error');
             next(error)
         }
     }

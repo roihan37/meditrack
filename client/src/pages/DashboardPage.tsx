@@ -1,27 +1,22 @@
 import { ChartAreaInteractive } from "@/components/chart-area-interactive"
-import { SectionCards } from "@/components/section-cards"
-import { SiteHeader } from "@/components/site-header"
-import data from "@/app/dashboard/data.json"
 import { CholesterolCard } from "@/components/card-colesterol"
 import { TableDashboard } from "@/components/table-dashboard"
-import { DatePickerForm } from "@/components/data-picker-form"
-import { Label } from "recharts"
-import { CardDescription } from "@/components/ui/card"
-import { useEffect } from "react"
 import { useAuthContext } from "@/context/AuthContext"
-import { getAllResults } from "@/context/action"
+import { getAllResults } from "@/api/action"
+import { SectionCards } from "@/components/section-cards"
+import { useEffect } from "react"
 import { toast } from "sonner"
+import { showLoadingToast } from "@/lib/toast"
 
 
 export default function DashboardPage() {
   const { setResults } = useAuthContext()
   useEffect(() => {
-    const toastId = toast.loading("🧬 Syncing Health Data...", {
+    const toastId = showLoadingToast({
+      header: "🧬 Syncing Health Data...",
       description: "Fetching blood pressure, glucose, and cholesterol levels...",
-      position: "top-right",
-      className: "bg-white border border-blue-300 text-blue-700 shadow-md",
-      duration: 999999,
-    });
+      duration: 5000,
+  })
 
     const fetchResultLab = async () => {
       try {
@@ -46,7 +41,7 @@ export default function DashboardPage() {
         </div>
         <CholesterolCard />
       </div>
-        <TableDashboard />
+      <TableDashboard />
     </>
   )
 }

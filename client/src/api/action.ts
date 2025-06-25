@@ -38,7 +38,6 @@ export const signupApi = async (singnupForm: Form): Promise<{ access_token: stri
   return responseJson;
 };
 
-
 export const fetchUser = async (token: string) => {
   const response = await fetch("http://localhost:3000/user/profile", {
     method: "GET",
@@ -56,7 +55,6 @@ export const fetchUser = async (token: string) => {
 
   return responseJson;
 }
-
 
 export const getAllResults = async (): Promise<ResultLab[]> => {
   const access_token = localStorage.getItem("access_token")
@@ -77,4 +75,32 @@ export const getAllResults = async (): Promise<ResultLab[]> => {
 
 
   return response.json()
+}
+
+export const addResultLab = async (dataLab: ResultLab): Promise<void> => {
+  const access_token = localStorage.getItem("access_token")
+
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+  }
+
+  if (access_token) {
+    headers["access_token"] = access_token
+  }
+
+  const response = await fetch("http://localhost:3000/lab-results", {
+    method: "POST",
+    headers,
+    body: JSON.stringify(dataLab)
+  })
+
+  const responseJson = await response.json()
+  console.log(responseJson);
+  
+  if (!response.ok) {
+    throw new Error(responseJson.message)
+  }
+
+
+  return responseJson 
 }
