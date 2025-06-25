@@ -45,10 +45,13 @@ const chartConfig = {
 
 export function ChartAreaInteractive() {
   const { results } = useAuthContext()
-  const chartData = results.map((el) => ({
-    date: formatDate(new Date(el.date), "yyyy-MM-dd"),
-    glucose: el.results.glucose,
-  }));
+
+  const chartData = results.length > 0
+  ? results.map((el) => ({
+      date: formatDate(new Date(el.date), "yyyy-MM-dd"),
+        glucose: el.results.glucose,
+    }))
+  : []
 
   const isMobile = useIsMobile()
   const [timeRange, setTimeRange] = React.useState("90d")
@@ -58,24 +61,27 @@ export function ChartAreaInteractive() {
       setTimeRange("7d")
     }
   }, [isMobile])
-
-  const referenceDate = new Date(chartData[0].date)
-  const filteredData = chartData.filter((item) => {
-    const date = new Date(item.date)
-    let daysToSubtract = 90
-    if (timeRange === "30d") {
-      daysToSubtract = 30
-    } else if (timeRange === "7d") {
-      daysToSubtract = 7
-    }
-    const startDate = new Date(referenceDate)
-    startDate.setDate(startDate.getDate() - daysToSubtract)
-    return date >= startDate
-  })
+  
+  let filteredData: typeof chartData = []
+  if (chartData.length > 0) {
+    const referenceDate = new Date(chartData[0].date)
+      filteredData = chartData.filter((item) => {
+      const date = new Date(item.date)
+      let daysToSubtract = 90
+      if (timeRange === "30d") {
+        daysToSubtract = 30
+      } else if (timeRange === "7d") {
+        daysToSubtract = 7
+      }
+      const startDate = new Date(referenceDate)
+      startDate.setDate(startDate.getDate() - daysToSubtract)
+      return date >= startDate
+    })
+  }
 
   return (
     <Card className="@container/card h-full justify-between">
-      
+
       <CardHeader>
         <div className="flex flex-row items-center gap-2">
           <Badge className="bg-purple-100 p-3" variant="outline">

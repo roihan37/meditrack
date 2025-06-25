@@ -79,11 +79,11 @@ class Controller {
     static async addLabResult(req, res, next){
         try {
             const { date, results } = req.body;
-            console.log(date)
             const findSameDate = await LabResult.findOne(
                 {
                     where:{
-                        date
+                        date,
+                        userId: req.userLogin.id
                     }
                 }
             )

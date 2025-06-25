@@ -35,11 +35,13 @@ export default function DashboardPage() {
   return (
     <>
       <div className="py-4 gap-4 flex xl:flex-row flex-col w-full">
-        <div className=" flex flex-col gap-4">
+        <div className=" flex flex-col gap-4 w-full">
           <SectionCards />
           <ChartAreaInteractive />
         </div>
-        <CholesterolCard />
+        <div className="xl:w-2xl">
+          <CholesterolCard />
+        </div>
       </div>
       <TableDashboard />
     </>

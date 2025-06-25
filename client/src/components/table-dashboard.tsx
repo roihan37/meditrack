@@ -66,7 +66,7 @@ export function TableDashboard() {
 
 
         <TableBody>
-          {[...results]
+          {results.length ?([...results]
             .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) // Urutkan dari terbaru
             .slice(0, 5) // Ambil 5 data pertama
             .map((el) => {
@@ -97,7 +97,17 @@ export function TableDashboard() {
 
                 </TableRow>
               );
-            })}
+            })
+            ):(
+              <TableRow>
+                <TableCell
+                  colSpan={4}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
         </TableBody>
       </Table>
     </Card>
