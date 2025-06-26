@@ -87,17 +87,17 @@ export function ChartAreaInteractive() {
           <Badge className="bg-purple-100 p-3" variant="outline">
             <ClipboardMinus className="text-purple-700" />
           </Badge>
-          <div>
-            <CardTitle>Glucose Tracker</CardTitle>
-            <CardDescription className="mt-1">
+          <div className="flex flex-col ">
+            <CardTitle className="text-md">Glucose Tracker</CardTitle>
+            <CardDescription>
               <span className="hidden @[540px]/card:block">
                 Total for the last 3 months
               </span>
-              <span className="@[540px]/card:hidden">Last 3 months</span>
+              <span className="@[540px]/card:hidden ">Last 3 months</span>
             </CardDescription>
           </div>
         </div>
-        <CardDescription className="ml-11 text-lime-400">-20% Decrease</CardDescription>
+            <CardDescription className="ml-11 text-lime-400 text-xs text-start sm:text-md">-20% Decrease</CardDescription>
         <CardAction>
           <ToggleGroup
             type="single"
@@ -112,7 +112,7 @@ export function ChartAreaInteractive() {
           </ToggleGroup>
           <Select value={timeRange} onValueChange={setTimeRange}>
             <SelectTrigger
-              className="flex w-40 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate @[767px]/card:hidden"
+              className="flex w-30 sm:w-40 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate @[767px]/card:hidden"
               size="sm"
               aria-label="Select a value"
             >

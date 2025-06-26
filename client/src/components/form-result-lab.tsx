@@ -2,12 +2,13 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
+import { CalendarIcon, CalendarX2, Save } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import {
   Form,
   FormControl,
@@ -26,9 +27,11 @@ import type { ResultLab } from "@/types/lab"
 import { addResultLab } from "@/api/action"
 import { FormSchema } from "@/types/schema-from"
 import { showErrorToast, showLoadingToast, showSuccessToast } from "@/lib/toast"
+import { useNavigate } from "react-router-dom"
 
 
 export function FormResultLab() {
+  const navigate = useNavigate()
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
 
@@ -36,7 +39,7 @@ export function FormResultLab() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     const formattedDate = new Date(data.date).toLocaleDateString('en-CA');
-    const dataLab : ResultLab = {
+    const dataLab: ResultLab = {
       date: formattedDate,
       results: {
         glucose: data.glucose,
@@ -52,26 +55,26 @@ export function FormResultLab() {
       }
     }
 
-   const toastId = showLoadingToast(
+    const toastId = showLoadingToast(
       {
-        header:"🧬 Adding your result...",
+        header: "🧬 Adding your result...",
         description: "Please wait while we save your medical data.",
       }
     )
-    
+
     try {
       await addResultLab(dataLab)
       showSuccessToast(
         {
           id: toastId,
-          header:"✅ Result added successfully!",
+          header: "✅ Result added successfully!",
           description: "Your latest health data has been saved.",
         }
       )
 
     } catch (error) {
       showErrorToast({
-        header : "❌ Failed to add result",
+        header: "❌ Failed to add result",
         id: toastId,
         description: `${error instanceof Error
           ? error.message
@@ -83,62 +86,15 @@ export function FormResultLab() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mt-9">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 ">
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-5">
 
-          <FormField
-            control={form.control}
-            name="date"
-            render={({ field }) => (
-              <FormItem className="flex flex-col ">
-                <div className="flex flex-row justify-between h-5 items-end">
-                  <FormLabel>Checkup Date</FormLabel>
-                  <FormMessage />
-                </div>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-full pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
-                      captionLayout="dropdown"
-                    />
-                  </PopoverContent>
-                </Popover>
-              </FormItem>
-            )}
-          />
-          <div></div>
           <FormField
             control={form.control}
             name="glucose"
             render={({ field }) => (
               <FormItem>
-                <div className="flex flex-row justify-between h-4 items-end">
-                  <FormLabel>Glucose</FormLabel>
-                  <FormMessage />
-                </div>
+                <FormLabel>Glucose</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
@@ -152,21 +108,21 @@ export function FormResultLab() {
                     }}
                   />
                 </FormControl>
-
+                <div className="h-4">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
-          <div></div>
+
 
           <FormField
             control={form.control}
             name="hdl"
             render={({ field }) => (
               <FormItem>
-                <div className="flex flex-row justify-between h-4 items-end cols-span-2">
-                  <FormLabel className="-mb-">Cholesterol</FormLabel>
-                  <FormMessage />
-                </div>
+                <FormLabel className="-mb-">Cholesterol</FormLabel>
+
                 <FormControl>
                   <Input placeholder="High-Density Lipoprotein" type="number"
                     {...field}
@@ -177,6 +133,9 @@ export function FormResultLab() {
                     }}
                   />
                 </FormControl>
+                <div className=" h-4 mb-2">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -185,11 +144,7 @@ export function FormResultLab() {
             control={form.control}
             name="ldl"
             render={({ field }) => (
-              <FormItem>
-                <div className="flex flex-row justify-between h-4 items-end">
-                  {/* <FormLabel>LDL</FormLabel> */}
-                  <FormMessage />
-                </div>
+              <FormItem className="-mt-5">
                 <FormControl>
                   <Input placeholder="Low-Density Lipoprotein" type="number"
                     {...field}
@@ -200,7 +155,9 @@ export function FormResultLab() {
                     }}
                   />
                 </FormControl>
-
+                <div className="h-4">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -210,10 +167,7 @@ export function FormResultLab() {
             name="systolic"
             render={({ field }) => (
               <FormItem>
-                <div className="flex flex-row justify-between h-4 items-end">
-                  <FormLabel>Blood Pressure</FormLabel>
-                  <FormMessage />
-                </div>
+                <FormLabel>Blood Pressure</FormLabel>
                 <FormControl>
                   <Input placeholder="Systolic" type="number"
                     {...field}
@@ -225,7 +179,9 @@ export function FormResultLab() {
                   />
                 </FormControl>
 
-
+                <div className="h-4 mb-2">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -234,11 +190,7 @@ export function FormResultLab() {
             control={form.control}
             name="diastolic"
             render={({ field }) => (
-              <FormItem>
-                <div className="flex flex-row justify-between h-4 items-end">
-
-                  <FormMessage />
-                </div>
+              <FormItem className="-mt-5">
                 <FormControl>
                   <Input placeholder="Diastolic" type="number"
                     {...field}
@@ -249,13 +201,84 @@ export function FormResultLab() {
                     }}
                   />
                 </FormControl>
-
+                <div className="h-4">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="date"
+            render={({ field }) => (
+                <div className="flex flex-row items-end gap-5 w-full">
+              <FormItem className="flex flex-col w-65 ">
+                <FormLabel>Checkup Date</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-full pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={(date) =>
+                          date > new Date() || date < new Date("1900-01-01")
+                        }
+                        captionLayout="dropdown"
+                      />
+                    </PopoverContent>
+                  </Popover>
+              </FormItem>
+                  <div className="mb-1.5">
+                    <FormMessage />
+                  </div>
+                </div>
+            )}
+          />
+          <Alert  className="-mt-">
+            <CalendarX2 />
+            <AlertTitle>Choose a new date.</AlertTitle>
+            <AlertDescription>
+              Please choose a date you haven't used for a previous checkup.
+            </AlertDescription>
+          </Alert>
+
+          <hr className="my-5"></hr>
+          <div className="flex felx-row justify-between  items-center">
+            <div className="flex flex-row gap-2">
+              <Save />
+              <p className="font-semibold">Save Lab</p>
+            </div>
+            <div className="flex flex-row gap-2">
+              <div
+                className="border-gray-300 w-30 flex items-center justify-center text-purple-900 px-5 text-sm hover:bg-gray-100 cursor-pointer border-2 rounded-md border-purple-900 "
+                onClick={() => navigate(-1)}
+              >
+                Back
+              </div>
+              <Button type="submit" className=" border-purple-900  border-2 text-white bg-purple-900 w-35">Next</Button>
+            </div>
+            </div>
         </div>
 
-        <Button type="submit" className="mt-10">Submit</Button>
       </form>
     </Form>
   )

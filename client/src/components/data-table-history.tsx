@@ -123,17 +123,18 @@ export function DataTableHistory() {
         <div className="flex flex-row items-center justify-between w-full mb-4 mt-5">
           <div className="flex flex-row items-center gap-2">
             <Repeat2 className="text-purple-700 w-9 h-9" />
-            <h1 className="text-3xl font-normal ">
+            <h1 className="text-md sm:text-xl font-normal ">
               Medical Checkup History
             </h1>
           </div>
-          <div>
+          <div className="flex flex-row">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm">
                   <IconLayoutColumns />
-                  <span className="hidden lg:inline">Customize Columns</span>
-                  <span className="lg:hidden">Columns</span>
+                  <span className="hidden xl:inline">Customize Columns</span>
+                  <span className="hidden sm:inline xl:hidden">Columns</span>
+                  {/* <span className="sm:hidden">Cols</span> */}
                   <IconChevronDown />
                 </Button>
               </DropdownMenuTrigger>
@@ -222,8 +223,13 @@ export function DataTableHistory() {
 
       {/* footer */}
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="text-muted-foreground flex-1 text-sm">
-        Showing {table.getRowModel().rows.length} of {table.getPrePaginationRowModel().rows.length} results lab | Page {table.getState().pagination.pageIndex + 1}
+        <div className="text-muted-foreground flex-1 text-sm flex flex-col sm:flex-row gap-1">
+          <p>
+            Showing {table.getRowModel().rows.length} of {table.getPrePaginationRowModel().rows.length} results lab 
+          </p>
+            <p className="border-l pl-1">
+           Page {table.getState().pagination.pageIndex + 1}
+          </p>
         </div>
         <div className="space-x-2">
           <Button

@@ -20,7 +20,7 @@ export function NavMain({
 }) {
 
   const navigate = useNavigate()
-  const location = useLocation();
+  const {pathname} = useLocation();
 
   return (
     <SidebarGroup>
@@ -37,13 +37,13 @@ export function NavMain({
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-        <SidebarMenu >
+        <SidebarMenu  >
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton className={` py-5 ${location.pathname===item.url?'bg-purple-100 text-purple-700 font-normal ':'hover:bg-zinc-100'}`} tooltip={item.title}
+              <SidebarMenuButton className={` py-5 border border-gray-50 ${pathname===item.url?'bg-white border border-purple-100 text-purple-800 font-normal ':'hover:bg-zinc-100'}`} tooltip={item.title}
               onClick={() => navigate(item.url)}
               >
-                {item.icon && <item.icon strokeWidth={location.pathname===item.url?2.5:2}/>}
+                {item.icon && <item.icon strokeWidth={pathname===item.url?2.5:2}/>}
                 <span>{item.title}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>

@@ -64,7 +64,7 @@ export function ChartBarMixed() {
   return (
     < >
       {/* CHART */}
-      <CardContent className=" p-5">
+      <CardContent className=" -mt-9 p-5">
         <ChartContainer config={chartConfig}>
           <BarChart
             className="h-[100px]"
