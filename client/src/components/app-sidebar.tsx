@@ -1,6 +1,5 @@
 import * as React from "react"
 import {
-  IconChartBar,
   IconDashboard,
   IconListDetails,
 } from "@tabler/icons-react"
@@ -39,11 +38,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         url: "/histories",
         icon: IconListDetails,
       },
-      {
-        title: "Analytics",
-        url: "#",
-        icon: IconChartBar,
-      }
     ]
   }
 

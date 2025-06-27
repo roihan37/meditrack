@@ -262,14 +262,15 @@ export function FormResultLab() {
           </Alert>
 
           <hr className="my-5"></hr>
-          <div className="flex felx-row justify-between  items-center">
-            <div className="flex flex-row gap-2">
+          <div className="flex flex-col items-start gap-9 sm:gap-0 sm:flex-row justify-between  sm:items-center">
+            <div className="flex flex-row gap-2 dark:text-zinc-300">
               <Save />
               <p className="font-semibold">Save Lab</p>
             </div>
             <div className="flex flex-row gap-2">
               <div
-                className="border-gray-300 dark:text-purple-400 dark:border-purple-400 dark:hover:bg-zinc-950 dark:bg-zinc-900 w-30 flex items-center justify-center text-purple-900 px-5 text-sm hover:bg-gray-100 cursor-pointer border-2 rounded-md border-purple-900 "
+                className="border-gray-300 dark:text-purple-400 dark:border-purple-400 dark:hover:bg-zinc-950 dark:bg-zinc-900 
+                w-30 flex items-center justify-center text-purple-900 px-5 text-sm hover:bg-gray-100 cursor-pointer border-2 rounded-md border-purple-900 "
                 onClick={() => navigate(-1)}
               >
                 Back

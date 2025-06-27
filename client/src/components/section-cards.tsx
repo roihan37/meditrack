@@ -19,7 +19,8 @@ export function SectionCards() {
   const trandBPPrev = trandNow?.bloodPressure?.systolic / trandNow?.bloodPressure?.diastolic
 
   return (
-    <div className="grid grid-cols-1 gap-4  md:grid-cols-2 lg:grid-cols-3 *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card  *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs ">
+    <div className="grid grid-cols-1 gap-4  md:grid-cols-2 lg:grid-cols-3 *:data-[slot=card]:from-primary/5 
+    *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card  *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs ">
 
       {/* CARD Glucose*/}
       <Card className="p-6 justify-between gap-3" >
