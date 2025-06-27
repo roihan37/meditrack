@@ -18,7 +18,7 @@ export const showLoadingToast = ({
     )=>{
     return(
         toast.loading(header, {
-            position: 'top-right',
+            position: 'bottom-right',
             description: description,
             duration: duration, 
           })

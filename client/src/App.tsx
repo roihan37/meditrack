@@ -10,7 +10,7 @@ import { ThemeProvider, useTheme } from "./context/theme-provider";
 function App() {
   const { theme } = useTheme()
   return (
-    <ThemeProvider defaultTheme="light"  storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="system"  storageKey="vite-ui-theme">
       <AuthProvider>
         <RouterProvider router={router} />
         <Toaster richColors theme={theme as "light" | "dark" | "system"} />
