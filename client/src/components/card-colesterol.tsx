@@ -12,6 +12,19 @@ import { useAuthContext } from "@/context/AuthContext"
 
 export function CholesterolCard() {
     const { results } = useAuthContext()
+
+    const cholsNow = results[0]?.results?.cholesterol?.total
+    const cholsPrevious = results[1]?.results?.cholesterol?.total
+    const systolic = results[0]?.results?.bloodPressure?.systolic
+    const diastolic = results[0]?.results?.bloodPressure?.diastolic
+    const bpNow = systolic / diastolic
+    const bpPrevous = results[1]?.results?.bloodPressure?.systolic / results[1]?.results?.bloodPressure?.diastolic
+    const percentChangeChols = ((cholsNow - cholsPrevious) / cholsPrevious) * 100;
+    const percentChangeBp = ((bpNow - bpPrevous) / bpPrevous) * 100;
+
+    console.log(bpNow, bpPrevous);
+    
+
     return (
         <Card className="p-6 h-full gap-12 w-full" >
             {/* HEADER */}
@@ -35,8 +48,8 @@ export function CholesterolCard() {
 
             {/* IMAGE */}
             <div className="flex justify-center ">
-                <div className="w-full max-w-[300px] aspect-square bg-zinc-50 rounded-full flex items-center justify-center">
-                    <div className="w-2/3 aspect-square bg-zinc-100 rounded-full flex items-center justify-center p-2">
+                <div className="w-full dark:bg-zinc-800 max-w-[300px] aspect-square bg-zinc-50 rounded-full flex items-center justify-center">
+                    <div className="w-2/3 dark:bg-zinc-700 aspect-square bg-zinc-100 rounded-full flex items-center justify-center p-2">
                         <img src="/heart.png" alt="Logo" className="w-full h-full object-contain" />
                     </div>
                 </div>
@@ -44,16 +57,16 @@ export function CholesterolCard() {
             <Card className="px-2">
                 <CardHeader className="gap-0" >
                     <div className="flex  flex-row items-center gap-2">
-                        <Badge className="bg-pink-100" variant="outline">
-                            <HeartPulse className=" text-pink-700" />
+                        <Badge className="bg-pink-100 dark:bg-zinc-800" variant="outline">
+                            <HeartPulse className="text-pink-700 dark:text-pink-400" />
                         </Badge>
-                        <CardDescription className="text-sm" >Blood Pressure</CardDescription>
+                        <CardDescription className="text-sm dark:text-zinc-100" >Blood Pressure</CardDescription>
                     </div>
                     <div className="flex flex-row items-center gap-2 mt-1">
-                        <Badge className="bg-fuchsia-100 " variant="outline">
-                            <Dna className="text-fuchsia-700" />
+                        <Badge className="bg-fuchsia-100 dark:bg-zinc-800" variant="outline">
+                            <Dna className="text-fuchsia-700 dark:text-fuchsia-400" />
                         </Badge>
-                        <CardDescription className="text-sm" >Cholesterol</CardDescription>
+                        <CardDescription className="text-sm dark:text-zinc-100" >Cholesterol</CardDescription>
                     </div>
                 </CardHeader>
                 <ChartBarMixed />
@@ -81,7 +94,14 @@ export function CholesterolCard() {
                     <div className="flex gap-2 mt-2 font-medium">
                         {
                             results.length ?
-                                ` Blood pressure up by 5.2% 📈 and cholesterol down by 5.2% 📉`
+                                !bpPrevous ? `Now your total cholesterol is ${cholsNow} mg/dL and blood pressure is ${systolic}/${diastolic} mg/dL`
+
+                                    : `${percentChangeBp < 0 ? `Blood pressure down by ${percentChangeBp}% 📉`
+                                        : `Blood pressure up by ${percentChangeBp.toFixed(2)}% 📈`
+                                    } and cholesterol ${percentChangeChols < 0 ? `down by ${percentChangeChols}% 📉`
+                                        : `up by ${percentChangeChols.toFixed(2)}% 📈`}`
+
+
                                 : `You have never checked up`
                         }
                     </div>

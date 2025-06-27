@@ -48,7 +48,7 @@ export const showErrorToast = ({
   } :ToastParams
     )=>{
     return(
-        toast.error(`❌ ${header}`, {
+        toast.error(`${header}`, {
             id, position: 'top-right',
             description: description,
             duration: 5000

@@ -74,7 +74,7 @@ export function FormResultLab() {
 
     } catch (error) {
       showErrorToast({
-        header: "❌ Failed to add result",
+        header: "Failed to add result",
         id: toastId,
         description: `${error instanceof Error
           ? error.message
@@ -269,12 +269,12 @@ export function FormResultLab() {
             </div>
             <div className="flex flex-row gap-2">
               <div
-                className="border-gray-300 w-30 flex items-center justify-center text-purple-900 px-5 text-sm hover:bg-gray-100 cursor-pointer border-2 rounded-md border-purple-900 "
+                className="border-gray-300 dark:text-purple-400 dark:border-purple-400 dark:hover:bg-zinc-950 dark:bg-zinc-900 w-30 flex items-center justify-center text-purple-900 px-5 text-sm hover:bg-gray-100 cursor-pointer border-2 rounded-md border-purple-900 "
                 onClick={() => navigate(-1)}
               >
                 Back
               </div>
-              <Button type="submit" className=" border-purple-900  border-2 text-white bg-purple-900 w-35">Next</Button>
+              <Button type="submit" className=" border-purple-900  border-2 dark:hover:border-purple-950 dark:hover:bg-purple-950 text-white bg-purple-900 w-35">Next</Button>
             </div>
             </div>
         </div>

@@ -1,5 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
-// import { DashboardPage } from "@/pages/DashboardPage"
+import { createBrowserRouter, redirect } from "react-router-dom";
 import { LoginPage } from "@/pages/LoginPage";
 import { SignupPage } from "@/pages/SignupPage";
 import { lazy, Suspense } from "react";
@@ -13,7 +12,6 @@ const router = createBrowserRouter([
   {
     element:
       <BaseLayout />,
-
     children:
       [
         {
@@ -41,18 +39,22 @@ const router = createBrowserRouter([
           ),
         },
       ],
-
   },
   {
     path: "/login",
-    element: <LoginPage />
+    element: <LoginPage />,
+    loader: () => {
+      if (localStorage.getItem('access_token')) {
+          throw redirect('/')
+      } else {
+          return null
+      }
+  }
   },
   {
     path: "/signup",
     element: <SignupPage />
   },
-
-
 ]);
 
 export default router

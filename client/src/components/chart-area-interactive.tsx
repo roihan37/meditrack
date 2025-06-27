@@ -45,13 +45,16 @@ const chartConfig = {
 
 export function ChartAreaInteractive() {
   const { results } = useAuthContext()
+  const gluNow = results[0]?.results?.glucose
+  const gluPrev = results[1]?.results?.glucose
+  const percentChange = ((gluNow - gluPrev) / gluPrev) * 100;
 
   const chartData = results.length > 0
-  ? results.map((el) => ({
+    ? results.map((el) => ({
       date: formatDate(new Date(el.date), "yyyy-MM-dd"),
-        glucose: el.results.glucose,
+      glucose: el.results.glucose,
     }))
-  : []
+    : []
 
   const isMobile = useIsMobile()
   const [timeRange, setTimeRange] = React.useState("90d")
@@ -61,11 +64,11 @@ export function ChartAreaInteractive() {
       setTimeRange("7d")
     }
   }, [isMobile])
-  
+
   let filteredData: typeof chartData = []
   if (chartData.length > 0) {
     const referenceDate = new Date(chartData[0].date)
-      filteredData = chartData.filter((item) => {
+    filteredData = chartData.filter((item) => {
       const date = new Date(item.date)
       let daysToSubtract = 90
       if (timeRange === "30d") {
@@ -84,8 +87,8 @@ export function ChartAreaInteractive() {
 
       <CardHeader>
         <div className="flex flex-row items-center gap-2">
-          <Badge className="bg-purple-100 p-3" variant="outline">
-            <ClipboardMinus className="text-purple-700" />
+          <Badge className="bg-purple-100 p-3 dark:bg-zinc-800" variant="outline">
+            <ClipboardMinus className="text-purple-700 dark:text-purple-400" />
           </Badge>
           <div className="flex flex-col ">
             <CardTitle className="text-md">Glucose Tracker</CardTitle>
@@ -97,7 +100,11 @@ export function ChartAreaInteractive() {
             </CardDescription>
           </div>
         </div>
-            <CardDescription className="ml-11 text-lime-400 text-xs text-start sm:text-md">-20% Decrease</CardDescription>
+        <CardDescription className="ml-11 text-lime-400 text-xs text-start sm:text-md">
+          {
+            `${percentChange < 0 ? `${percentChange.toFixed(2)}% Decrease` : `${percentChange.toFixed(2)}% Increase`}`
+          }
+        </CardDescription>
         <CardAction>
           <ToggleGroup
             type="single"

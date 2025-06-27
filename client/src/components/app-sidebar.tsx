@@ -59,7 +59,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <a href="#">
                 {/* <IconInnerShadowTop className="!size-10" /> */}
                 <div className="bg-purple-700 text-primary-foreground flex size-6 items-center justify-center rounded-md">
-                  <Activity className="size-4" />
+                  <Activity className="size-4 dark:text-white" />
                 </div>
                 <span className="text-xl font-semibold">Medictrack</span>
               </a>

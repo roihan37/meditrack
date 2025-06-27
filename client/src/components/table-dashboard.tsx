@@ -11,22 +11,24 @@ import { Card, CardDescription } from "./ui/card"
 import { IconHistory } from "@tabler/icons-react"
 import { Badge } from "@/components/ui/badge"
 import { useAuthContext } from "@/context/AuthContext"
+import { useNavigate } from "react-router-dom"
 
 
 
 export function TableDashboard() {
   const { results } = useAuthContext()
+  const navigate = useNavigate()
   return (
     <Card className=" p-6 gap-4 overflow-auto mb-6">
       <div className="flex flex-row justify-between items-center">
         <div className="text-2xl ml-2 flex flex-row items-center gap-2">
-          <Badge className="p-2 bg-purple-100 text-purple-700">
-            <IconHistory />
+          <Badge className="p-2 bg-purple-100 text-purple-700 dark:bg-zinc-800">
+            <IconHistory className="dark:text-purple-400" />
           </Badge>
           <h1 >Latest Checkup</h1>
         </div>
         <div>
-          <CardDescription className="text-md">Show More</CardDescription>
+          <CardDescription className="text-md cursor-pointer hover:underline" onClick={()=>{navigate('/histories')}}>Show More</CardDescription>
         </div>
       </div>
 

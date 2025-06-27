@@ -33,6 +33,7 @@ import {
 import { useAuthContext } from "@/context/AuthContext"
 import { IconChevronDown, IconLayoutColumns, IconPlus } from "@tabler/icons-react"
 import type { TableLabResult } from "@/types/lab"
+import { useNavigate } from "react-router-dom"
 
 export const columns: ColumnDef<TableLabResult>[] = [
   {
@@ -74,6 +75,7 @@ export const columns: ColumnDef<TableLabResult>[] = [
 
 export function DataTableHistory() {
   const { results } = useAuthContext()
+  const navigate = useNavigate()
 
   const data: TableLabResult[] = React.useMemo(() => {
     return results.map((el) => ({
@@ -162,7 +164,7 @@ export function DataTableHistory() {
                   })}
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button className="ml-2" variant="outline" size="sm">
+            <Button onClick={()=>{navigate('/add-result')}} className="ml-2" variant="outline" size="sm">
               <IconPlus />
               <span className="hidden lg:inline">Add Section</span>
             </Button>
@@ -172,7 +174,7 @@ export function DataTableHistory() {
       {/* body/table */}
       <div className="rounded-md border">
         <Table>
-          <TableHeader className="bg-zinc-100 " >
+          <TableHeader className="bg-zinc-100 dark:bg-zinc-900 " >
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
