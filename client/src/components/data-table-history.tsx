@@ -3,15 +3,9 @@
 import * as React from "react"
 import {
   type ColumnDef,
-  type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  type SortingState,
   useReactTable,
-  type VisibilityState,
 } from "@tanstack/react-table"
 import { Repeat2 } from "lucide-react"
 
@@ -34,7 +28,6 @@ import { useAuthContext } from "@/context/AuthContext"
 import { IconChevronDown, IconLayoutColumns, IconPlus } from "@tabler/icons-react"
 import type { TableLabResult } from "@/types/lab"
 import { useNavigate } from "react-router-dom"
-
 export const columns: ColumnDef<TableLabResult>[] = [
   {
     accessorKey: "date",
@@ -42,11 +35,21 @@ export const columns: ColumnDef<TableLabResult>[] = [
   },
   {
     accessorKey: "glucose",
-    header: "Glucose",
+    header: () => (
+      <div className="flex flex-col items-center">
+        <span className="font-medium">Glucose</span>
+        <span className="text-xs text-muted-foreground">mg/dL</span>
+      </div>
+    ),
   },
   {
-    accessorKey: "cholesterol", // ✅ id manual
-    header: "Cholesterol",
+    accessorKey: "cholesterol",
+    header: () => (
+      <div className="flex flex-col items-center">
+        <span className="font-medium">Cholesterol</span>
+        <span className="text-xs text-muted-foreground">mg/dL</span>
+      </div>
+    ),
     cell: ({ row }) => {
       const { ch_hdl, ch_ldl } = row.original;
       return (
@@ -58,8 +61,13 @@ export const columns: ColumnDef<TableLabResult>[] = [
     },
   },
   {
-    accessorKey: "bloodPressure", // ✅ id manual
-    header: "Blood Pressure",
+    accessorKey: "bloodPressure",
+    header: () => (
+      <div className="flex flex-col items-center">
+        <span className="font-medium">Blood Pressure</span>
+        <span className="text-xs text-muted-foreground">mmHg</span>
+      </div>
+    ),
     cell: ({ row }) => {
       const { bp_systolic, bp_diastolic } = row.original;
       return (
@@ -90,32 +98,10 @@ export function DataTableHistory() {
     }))
   }, [results])
 
-
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
-
   const table = useReactTable({
     data,
     columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
   })
 
   return (

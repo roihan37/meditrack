@@ -3,7 +3,7 @@ import { toast } from "sonner";
 type ToastParams = {
     id?:any ,
     header: string,
-    position?: "top-right" | "top-left" | "bottom-right" | "bottom-left"
+    // position?: "top-right" | "top-left" | "bottom-right" | "bottom-left"
     description?: string
     duration?: number,
     

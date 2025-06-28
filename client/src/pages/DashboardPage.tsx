@@ -22,7 +22,7 @@ export default function DashboardPage() {
       try {
         const response = await getAllResults()
         setResults(response)
-        toast.dismiss(toastId) // ✅ tutup loading setelah berhasil
+        toast.dismiss(toastId) 
       } catch (error) {
         toast.error("Failed to load data", { id: toastId, position: 'top-right' })
         console.error(error)

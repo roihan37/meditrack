@@ -9,22 +9,15 @@ import { ChartBarMixed } from "./chart-bar-cholesterol"
 import { Badge } from "./ui/badge"
 import { Dna, HeartPulse, Stethoscope } from "lucide-react"
 import { useAuthContext } from "@/context/AuthContext"
+import { findPercent } from "@/lib/utils"
 
 export function CholesterolCard() {
     const { results } = useAuthContext()
-
-    const cholsNow = results[0]?.results?.cholesterol?.total
-    const cholsPrevious = results[1]?.results?.cholesterol?.total
-    const systolic = results[0]?.results?.bloodPressure?.systolic
-    const diastolic = results[0]?.results?.bloodPressure?.diastolic
-    const bpNow = systolic / diastolic
-    const bpPrevous = results[1]?.results?.bloodPressure?.systolic / results[1]?.results?.bloodPressure?.diastolic
-    const percentChangeChols = ((cholsNow - cholsPrevious) / cholsPrevious) * 100;
-    const percentChangeBp = ((bpNow - bpPrevous) / bpPrevous) * 100;
-
-    console.log(bpNow, bpPrevous);
-    
-
+    const {
+        cholPercent, bloodPercent, 
+        bloodPrev, cholNow, sysNow, diasNow
+    } = findPercent(results)
+   
     return (
         <Card className="p-6 h-full gap-12 w-full flex flex-col justify-between" >
             {/* HEADER */}
@@ -60,15 +53,16 @@ export function CholesterolCard() {
                         <Badge className="bg-pink-100 dark:bg-zinc-800" variant="outline">
                             <HeartPulse className="text-pink-700 dark:text-pink-400" />
                         </Badge>
-                        <CardDescription className="text-sm dark:text-zinc-100" >Blood Pressure</CardDescription>
+                        <CardDescription className="text-sm dark:text-zinc-100" >Blood Pressure (mmHg)</CardDescription>
                     </div>
                     <div className="flex flex-row items-center gap-2 mt-1">
                         <Badge className="bg-fuchsia-100 dark:bg-zinc-800" variant="outline">
                             <Dna className="text-fuchsia-700 dark:text-fuchsia-400" />
                         </Badge>
-                        <CardDescription className="text-sm dark:text-zinc-100" >Cholesterol</CardDescription>
+                        <CardDescription className="text-sm dark:text-zinc-100" >Cholesterol (mg/dL)</CardDescription>
                     </div>
                 </CardHeader>
+
                 <ChartBarMixed />
 
                 {/* FOOTER */}
@@ -94,12 +88,12 @@ export function CholesterolCard() {
                     <div className="flex gap-2 mt-2 font-medium">
                         {
                             results.length ?
-                                !bpPrevous ? `Now your total cholesterol is ${cholsNow} mg/dL and blood pressure is ${systolic}/${diastolic} mg/dL`
+                                !bloodPrev ? `Now your total cholesterol is ${cholNow} mg/dL and blood pressure is ${sysNow}/${diasNow} mg/dL`
 
-                                    : `${percentChangeBp < 0 ? `Blood pressure down by ${percentChangeBp}% 📉`
-                                        : `Blood pressure up by ${percentChangeBp.toFixed(2)}% 📈`
-                                    } and cholesterol ${percentChangeChols < 0 ? `down by ${percentChangeChols}% 📉`
-                                        : `up by ${percentChangeChols.toFixed(2)}% 📈`}`
+                                    : `${bloodPercent < 0 ? `Blood pressure down by ${bloodPercent.toFixed(2)}% 📉`
+                                        : `Blood pressure up by ${bloodPercent.toFixed(2)}% 📈`
+                                    } and cholesterol ${cholPercent < 0 ? `down by ${cholPercent.toFixed(2)}% 📉`
+                                        : `up by ${(cholPercent).toFixed(2)}% 📈`}`
 
 
                                 : `You have never checked up`

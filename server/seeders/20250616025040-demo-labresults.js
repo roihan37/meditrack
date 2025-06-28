@@ -14,7 +14,7 @@ module.exports = {
      * }], {});
     */
      const users = await queryInterface.sequelize.query(
-      `SELECT id FROM "Users" WHERE email = 'roy@gmail.com';`
+      `SELECT id FROM "Users" WHERE email = 'example@gmail.com';`
     );
     const userId = users[0][0].id;
      const rawData = JSON.parse(fs.readFileSync('./data/labResult.json', 'utf-8'))

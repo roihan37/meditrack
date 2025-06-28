@@ -1,8 +1,8 @@
 [
     {
-        "username" : "roymalik",
-        "email" : "roy@gmail.com",
-        "password" : "tasik123",
+        "username" : "example",
+        "email" : "example@gmail.com",
+        "password" : "12345678",
         "phoneNumber" : "0812222122",
         "address" : "Tasikmalaya"
     }

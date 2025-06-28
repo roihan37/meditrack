@@ -8,48 +8,49 @@
 
 **MadicTrack** is a health metrics dashboard designed to display patients' lab results over time. This project emphasizes frontend development skills with a lightweight backend implementation.
 
+![Demo 1](https://res.cloudinary.com/djlazr18b/image/upload/v1751090981/Desain_tanpa_judul_j8tsv6.jpg)
 
 ## Submission Checklist
 
 ### Core Requirements
 - [x] User authentication (signup/signin) working
 - [x] JWT token management
-- [ ] Lab results dashboard displaying all three metrics
-- [ ] Data visualization with appropriate charts
-- [ ] Add new lab result functionality
-- [ ] Mobile responsive design
-- [ ] Generated realistic mock data with irregular time intervals
+- [x] Lab results dashboard displaying all three metrics
+- [x] Data visualization with appropriate charts
+- [x] Add new lab result functionality
+- [x] Mobile responsive design
+- [x] Generated realistic mock data with irregular time intervals
 
 ### Technical Requirements
-- [ ] React + Vite + Tailwind CSS + TypeScript frontend
-- [ ] Backend API with all required endpoints
-- [ ] Database integration
-- [ ] Proper error handling throughout
-- [ ] Loading states for async operations
-- [ ] Secure token storage implementation
+- [x] React + Vite + Tailwind CSS + TypeScript frontend
+- [x] Backend API with all required endpoints
+- [x] Database integration
+- [x] Proper error handling throughout
+- [x] Loading states for async operations
+- [x] Secure token storage implementation
 
 ### Documentation
-- [ ] README with clear setup instructions and assumptions made
+- [x] README with clear setup instructions and assumptions made
 
 ### Code Quality
-- [ ] Clean, well-organized code structure
-- [ ] TypeScript types properly defined
-- [ ] Components are reusable where appropriate
-- [ ] No console errors
+- [x] Clean, well-organized code structure
+- [x] TypeScript types properly defined
+- [x] Components are reusable where appropriate
+- [x] No console errors
 
 ### Final Steps
-- [ ] Project runs locally without errors
-- [ ] All features tested and working
-- [ ] Repository pushed to GitHub/GitLab
-- [ ] `admin@orthonyx.com` is added as a member in the GitHub/GitLab repository
-- [ ] Verified setup instructions work on a clean install
+- [x] Project runs locally without errors
+- [x] All features tested and working
+- [x] Repository pushed to GitHub/GitLab
+- [x] `admin@orthonyx.com` is added as a member in the GitHub/GitLab repository
+- [x] Verified setup instructions work on a clean install
 
 ## Getting Started
 
 ### Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/roihan37/meditrack-Assignment.git
 cd MadicTrack
 ```
 
@@ -89,8 +90,8 @@ npx sequelize-cli db:seed:all
 ```
 
 ### Environment Variables
-Create a .env file from .env.example and add:
-Then change the examples.
+Create an .env file in the server folder of .env.example and add:
+Then change the example.
 
 Required:
 `JWT_SECRET_KEY`
@@ -110,4 +111,17 @@ npm install
 npm run dev
 ```
 Open http://localhost:5173 then we're ready
-If you want to see an example of seeded data, log in with the email account `example@gmail.com`, password `tasik123`
+If you want to see an example of seeded data, log in with the email account `example@gmail.com`, password `12345678`
+
+
+## 👨‍💻 Author
+Built with by Roihan Salsabila
+
+
+
+
+
+
+
+
+

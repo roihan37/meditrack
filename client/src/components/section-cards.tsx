@@ -9,14 +9,12 @@ import {
 } from "@/components/ui/card"
 import { useAuthContext } from "@/context/AuthContext"
 import { ClipboardMinus, Dna, HeartPulse } from "lucide-react"
+import { findPercent } from "@/lib/utils"
 
 export function SectionCards() {
   const { results } = useAuthContext()
-  const result = results?.[0]
-  const trandNow = results[0]?.results
-  const trandPrev = results[0]?.results
-  const trandBPNow = trandNow?.bloodPressure?.systolic / trandNow?.bloodPressure?.diastolic
-  const trandBPPrev = trandNow?.bloodPressure?.systolic / trandNow?.bloodPressure?.diastolic
+  const {bloodPercent, cholPercent, gluPercent} = findPercent(results)
+  const result = results[0]?.results
 
   return (
     <div className="grid grid-cols-1 gap-4  md:grid-cols-2 lg:grid-cols-3 *:data-[slot=card]:from-primary/5 
@@ -36,7 +34,7 @@ export function SectionCards() {
           {
             results.length ? (
               <>
-                {result?.results?.glucose}
+                {result?.glucose}
                 <span className="font-normal text-xl ml-2">mg/dL</span>
               </>
             ) : (
@@ -49,13 +47,14 @@ export function SectionCards() {
         <div className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium dark:text-zinc-400">
             Glu for This month {
-            trandNow?.glucose < trandPrev?.glucose ?
+            gluPercent < 0 ?
             <IconTrendingDown className="size-4" />
             : <IconTrendingUp className="size-4"/>
             }
           </div>
         </div>
       </Card>
+
       {/* CARD Cholesterol*/}
       <Card className="p-6 justify-between gap-6" >
         <div className="flex justify-between items-center gap-2">
@@ -70,7 +69,7 @@ export function SectionCards() {
           {
             results.length ? (
               <>
-                {result?.results?.cholesterol?.total}
+                {result?.cholesterol?.total}
                 <span className="font-normal text-xl ml-2">mg/dL</span>
               </>
             ) : (
@@ -83,7 +82,7 @@ export function SectionCards() {
         <div className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium dark:text-zinc-400">
             Chol for This month {
-            trandNow?.cholesterol?.total < trandPrev?.cholesterol?.total ?
+            cholPercent < 0 ?
             <IconTrendingDown className="size-4" />
             : <IconTrendingUp className="size-4"/>
             }
@@ -107,9 +106,9 @@ export function SectionCards() {
             results.length > 0 ? (
               <div >
                 <p className="xl:text-2xl text-3xl">
-                  {result?.results?.bloodPressure?.systolic}/
-                  <span >{result?.results?.bloodPressure?.diastolic}</span>
-                  <span className="font-normal xl:text-sm text-lg ml-2">mg/dL</span>
+                  {result?.bloodPressure?.systolic}/
+                  <span >{result?.bloodPressure?.diastolic}</span>
+                  <span className="font-normal xl:text-sm text-lg ml-2">mmHg</span>
                 </p>
               </div>
             ) : (
@@ -122,7 +121,7 @@ export function SectionCards() {
         <div className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium dark:text-zinc-400">
             BP for This month {
-            trandBPNow < trandBPPrev ?
+            bloodPercent < 0 ?
             <IconTrendingDown className="size-4" />
             : <IconTrendingUp className="size-4"/>
             }

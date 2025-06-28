@@ -30,8 +30,9 @@ import { useAuthContext } from "@/context/AuthContext"
 import { formatDate } from "date-fns"
 import { ClipboardMinus, Dna, GitCommitVertical } from "lucide-react"
 import { Badge } from "./ui/badge"
+import { findPercent } from "@/lib/utils"
 
-export const description = "An interactive area chart"
+// export const description = "An interactive area chart"
 const chartConfig = {
   glucose: {
     label: "Glucose",
@@ -48,11 +49,11 @@ const chartConfig = {
 
 } satisfies ChartConfig
 
+
+
 export function ChartAreaInteractive() {
   const { results } = useAuthContext()
-  const gluNow = results[0]?.results?.glucose
-  const gluPrev = results[1]?.results?.glucose
-  const percentChange = ((gluNow - gluPrev) / gluPrev) * 100;
+  const { gluPercent, cholPercent } = findPercent(results)
 
   const chartData = results.length > 0
     ? results.map((el) => ({
@@ -91,6 +92,8 @@ export function ChartAreaInteractive() {
 
   return (
     <Card className="@container/card h-full justify-between">
+
+      {/* Chart Glu */}
       <CardHeader>
         <div className="flex flex-row items-center gap-2">
           <Badge className="bg-purple-100 p-3 dark:bg-zinc-800" variant="outline">
@@ -108,7 +111,7 @@ export function ChartAreaInteractive() {
         </div>
         <CardDescription className="ml-11 text-lime-400 text-xs text-start sm:text-md">
           {
-            `${percentChange < 0 ? `${percentChange.toFixed(2)}% Decrease` : `${percentChange.toFixed(2)}% Increase`}`
+            `${gluPercent < 0 ? `${gluPercent.toFixed(2)}% Decrease` : `${gluPercent.toFixed(2)}% Increase`}`
           }
         </CardDescription>
         <CardAction>
@@ -202,7 +205,9 @@ export function ChartAreaInteractive() {
         </ChartContainer>
 
       </CardContent>
-        <CardHeader>
+
+      {/* Chart Chol */}
+      <CardHeader>
         <div className="flex flex-row items-center gap-2 ">
           <Badge className="bg-purple-100 p-3 dark:bg-zinc-800" variant="outline">
             <Dna className="text-fuchsia-700 dark:text-fuchsia-400" />
@@ -210,15 +215,15 @@ export function ChartAreaInteractive() {
           <div className="flex flex-col ">
             <CardTitle className="text-md">Cholesterol Tracker</CardTitle>
             <CardDescription>
-            <CardDescription className=" text-lime-400 text-xs text-start sm:text-md">
-          {
-            `${percentChange < 0 ? `${percentChange.toFixed(2)}% Decrease` : `${percentChange.toFixed(2)}% Increase`}`
-          }
-        </CardDescription>
+              <CardDescription className=" text-lime-400 text-xs text-start sm:text-md">
+                {
+                  `${cholPercent < 0 ? `${cholPercent.toFixed(2)}% Decrease` : `${cholPercent.toFixed(2)}% Increase`}`
+                }
+              </CardDescription>
             </CardDescription>
           </div>
         </div>
-        
+
         <CardAction>
           <Select value={timeRange} onValueChange={setTimeRange}>
             <SelectTrigger
@@ -242,78 +247,119 @@ export function ChartAreaInteractive() {
           </Select>
         </CardAction>
       </CardHeader>
-      
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full mt-5">
-          <AreaChart
-            accessibilityLayer
-            data={filteredData}
-            margin={{
-              left: 12,
-              right: 12,
+
+      <ChartContainer
+        config={chartConfig}
+        className="aspect-auto h-[250px] w-full mt-5">
+        <AreaChart
+          accessibilityLayer
+          data={filteredData}
+          margin={{
+            left: 12,
+            right: 12,
+          }}
+        >
+          <CartesianGrid vertical={false} />
+          <XAxis
+            dataKey="date"
+            tickLine={false}
+            axisLine={false}
+            tickMargin={8}
+            minTickGap={32}
+            tickFormatter={(value) => {
+              const date = new Date(value)
+              return date.toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+              })
             }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value)
-                return date.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                })
-              }}
+          />
+          <ChartTooltip
+              content={
+                <ChartTooltipContent
+                  hideLabel
+                  className="w-[180px]"
+                  formatter={(value, name, item, index) => (
+                    <>
+                      <div
+                        className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-(--color-bg)"
+                        style={
+                          {
+                            "--color-bg": `var(--color-${name})`,
+                          } as React.CSSProperties
+                        }
+                      />
+                      {chartConfig[name as keyof typeof chartConfig]?.label ||
+                        name}
+                      <div className="text-foreground ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums">
+                        {value}
+                        <span className="text-muted-foreground font-normal">
+                          mg/dL
+                        </span>
+                      </div>
+                      {/* Add this after the last item */}
+                      {index === 1 && (
+                        <div className="text-foreground mt-1.5 flex basis-full items-center border-t pt-1.5 text-xs font-medium">
+                          Total
+                          <div className="text-foreground ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums">
+                            {item.payload.cholHdl + item.payload.cholLdl}
+                            <span className="text-muted-foreground font-normal">
+                              mg/dL
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
+                />
+              }
+              cursor={false}
+              defaultIndex={1}
             />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-cholHdl)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-cholHdl)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-cholLdl)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-cholLdl)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-            </defs>
-            <Area
-              dataKey="cholHdl"
-              type="natural"
-              fill="url(#fillMobile)"
-              fillOpacity={0.4}
-              stroke="var(--color-cholHdl)"
-              stackId="a"
-            />
-            <Area
-              dataKey="cholLdl"
-              type="natural"
-              fill="url(#fillDesktop)"
-              fillOpacity={0.4}
-              stroke="var(--color-cholLdl)"
-              stackId="a"
-            />
-          </AreaChart>
-        </ChartContainer>
+          <defs>
+            <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
+              <stop
+                offset="5%"
+                stopColor="var(--color-cholHdl)"
+                stopOpacity={0.8}
+              />
+              <stop
+                offset="95%"
+                stopColor="var(--color-cholHdl)"
+                stopOpacity={0.1}
+              />
+            </linearGradient>
+            <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
+              <stop
+                offset="5%"
+                stopColor="var(--color-cholLdl)"
+                stopOpacity={0.8}
+              />
+              <stop
+                offset="95%"
+                stopColor="var(--color-cholLdl)"
+                stopOpacity={0.1}
+              />
+            </linearGradient>
+          </defs>
+          <Area
+            dataKey="cholHdl"
+            type="natural"
+            fill="url(#fillMobile)"
+            fillOpacity={0.4}
+            stroke="var(--color-cholHdl)"
+            stackId="a"
+          />
+          <Area
+            dataKey="cholLdl"
+            type="natural"
+            fill="url(#fillDesktop)"
+            fillOpacity={0.4}
+            stroke="var(--color-cholLdl)"
+            stackId="a"
+          />
+        </AreaChart>
+      </ChartContainer>
     </Card>
   )
 }
