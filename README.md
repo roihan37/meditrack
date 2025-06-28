@@ -1,9 +1,5 @@
-<div align="center">
-	<h1 align="center">🩺 MadicTrack</h1>
-  <p align="center">
-    <span>React Framework, Auth, Tailwind CSS, shadcn/ui</span>
-    <br />
-  </p>
+<div>
+	<h1 >🩺 MadicTrack</h1>
 </div>
 
 **MadicTrack** is a health metrics dashboard designed to display patients' lab results over time. This project emphasizes frontend development skills with a lightweight backend implementation.
