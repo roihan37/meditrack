@@ -38,7 +38,6 @@
 - [x] Project runs locally without errors
 - [x] All features tested and working
 - [x] Repository pushed to GitHub/GitLab
-- [x] `admin@orthonyx.com` is added as a member in the GitHub/GitLab repository
 - [x] Verified setup instructions work on a clean install
 
 ## Getting Started
