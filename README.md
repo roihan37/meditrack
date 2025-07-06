@@ -45,7 +45,7 @@
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/roihan37/meditrack-Assignment.git
+git clone https://github.com/roihan37/meditrack.git
 cd MadicTrack
 ```
 
